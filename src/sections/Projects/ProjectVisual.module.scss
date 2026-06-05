@@ -1,0 +1,608 @@
+// Abstract compositions built from simple shapes. Neutral tones carry the
+// structure; the accent marks the one detail each composition is about.
+
+.visual {
+  position: relative;
+  isolation: isolate;
+  height: 100%;
+  min-height: 14rem;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(ellipse 70% 60% at 75% 15%, var(--color-glow), transparent 70%),
+    var(--color-bg-subtle);
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  // `safe` falls back to the top when a composition is taller than a small visual.
+  align-items: safe center;
+  justify-items: center;
+  // Extra room at the top keeps the "Illustrative visual" label clear of the composition.
+  padding: 3.25rem 7% 7%;
+  transition: scale 900ms var(--ease-expo);
+}
+
+.note {
+  position: absolute;
+  top: 0.875rem;
+  left: 0.875rem;
+  z-index: 2;
+  padding: 0.3rem 0.625rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-faint);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+// ---- Shared pieces ----
+
+.frame {
+  width: 100%;
+  max-width: 34rem;
+  overflow: hidden;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 12px;
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-float);
+}
+
+.main {
+  width: 90%;
+}
+
+.frameBar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.frameDots {
+  display: flex;
+  gap: 0.3rem;
+
+  span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-border-strong);
+  }
+}
+
+.frameUrl {
+  flex: 0 1 40%;
+  height: 0.45rem;
+  margin-inline: auto;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+}
+
+.frameBody {
+  display: grid;
+  gap: 0.75rem;
+  padding: 4.5%;
+}
+
+%line {
+  display: block;
+  height: 0.375rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-border-strong);
+}
+
+.lineShort {
+  @extend %line;
+  width: 40%;
+}
+
+.lineMedium {
+  @extend %line;
+  width: 72%;
+}
+
+.lineTiny {
+  @extend %line;
+  width: 42%;
+  height: 0.3rem;
+  background: var(--color-border);
+}
+
+.float {
+  position: absolute;
+  z-index: 1;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 10px;
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-float);
+}
+
+.floatRight {
+  right: 4%;
+  bottom: 7%;
+  width: 34%;
+}
+
+.floatLeft {
+  left: 4%;
+  bottom: 8%;
+  width: 36%;
+}
+
+.bar,
+.barAccent {
+  flex: 1;
+  height: var(--h);
+  border-radius: 3px 3px 0 0;
+  background: var(--color-border-strong);
+}
+
+.barAccent {
+  background: var(--color-accent);
+}
+
+// ---- Inventory ----
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 22% minmax(0, 1fr);
+  gap: 4%;
+}
+
+.sidebar {
+  display: grid;
+  align-content: start;
+  gap: 0.6rem;
+  padding-right: 10%;
+  border-right: 1px solid var(--color-border);
+}
+
+.logo {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-bottom: 0.4rem;
+  border-radius: 5px;
+  background: var(--color-accent);
+}
+
+.navItem,
+.navActive {
+  height: 0.35rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-border-strong);
+}
+
+.navActive {
+  background: var(--color-text-muted);
+}
+
+.panel {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.tile {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.figure,
+.figureAccent {
+  width: 62%;
+  height: 0.75rem;
+  border-radius: 4px;
+  background: var(--color-text-faint);
+}
+
+.figureAccent {
+  background: var(--color-accent);
+}
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 4%;
+  height: 5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rows {
+  display: grid;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 0.75rem;
+  align-items: center;
+  padding-block: 0.42rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cell {
+  width: 70%;
+  height: 0.35rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-border-strong);
+}
+
+.meter {
+  height: 0.3rem;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+
+  span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--color-text-faint);
+  }
+
+  .meterLow {
+    background: var(--color-accent);
+  }
+}
+
+.miniChart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8%;
+  height: 2.5rem;
+  margin-top: 0.6rem;
+}
+
+// ---- Employee ----
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.search {
+  flex: 1;
+  height: 1.4rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+}
+
+.chip,
+.chipActive {
+  width: 2.75rem;
+  height: 1.4rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+}
+
+.chipActive {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.table {
+  display: grid;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 1.6rem minmax(0, 1fr) 3.25rem 0.5rem;
+  gap: 0.75rem;
+  align-items: center;
+  padding-block: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.avatar {
+  width: 1.6rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-border-strong), var(--color-bg-subtle));
+}
+
+.nameBlock {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.role,
+.roleAccent {
+  height: 1rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+}
+
+.roleAccent {
+  border-color: transparent;
+  background: var(--color-accent-soft);
+}
+
+.status,
+.statusOff {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-text-faint);
+}
+
+.statusOff {
+  background: var(--color-accent);
+}
+
+.pager {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.35rem;
+}
+
+.page,
+.pageActive {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+}
+
+.pageActive {
+  background: var(--color-text);
+}
+
+.lock {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.lockIcon {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-bottom: 0.25rem;
+  border: 1.5px solid var(--color-accent);
+  border-radius: 6px;
+}
+
+// ---- Commerce ----
+
+.shop {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 34%;
+  gap: 4%;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.product {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.productImage {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  background: linear-gradient(
+    calc(var(--tone) * 55deg + 20deg),
+    var(--color-border-strong),
+    var(--color-bg-subtle)
+  );
+}
+
+.price,
+.priceAccent {
+  width: 40%;
+  height: 0.35rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-border-strong);
+}
+
+.priceAccent {
+  background: var(--color-accent);
+}
+
+.cart {
+  display: grid;
+  align-content: start;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+}
+
+.cartLine {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.thumb {
+  aspect-ratio: 1;
+  border-radius: 5px;
+  background: var(--color-border-strong);
+}
+
+.total {
+  width: 60%;
+  height: 0.5rem;
+  margin-top: 0.4rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-text-faint);
+}
+
+.checkout {
+  height: 1.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+}
+
+.steps {
+  display: flex;
+  align-items: center;
+  width: 42%;
+  padding: 0.9rem 1rem;
+}
+
+.step,
+.stepDone {
+  display: flex;
+  flex: 1;
+  align-items: center;
+
+  &::before {
+    content: '';
+    flex-shrink: 0;
+    width: 0.6rem;
+    height: 0.6rem;
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: 50%;
+  }
+
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1.5px;
+    background: var(--color-border-strong);
+  }
+
+  &:last-child {
+    flex: 0;
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.stepDone {
+  &::before {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+  }
+
+  &::after {
+    background: var(--color-accent);
+  }
+}
+
+// ---- Saffron ----
+
+.field {
+  position: absolute;
+  inset: 0;
+}
+
+.fieldLines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  line {
+    stroke: var(--color-border-strong);
+    stroke-width: 1;
+    stroke-dasharray: 4 5;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+.bloom {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: min(44%, 16rem);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+}
+
+.bloomRing {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--color-glow), transparent);
+
+  & + & {
+    inset: 16%;
+    border-style: dashed;
+    background: none;
+  }
+}
+
+.flower {
+  position: relative;
+  width: 58%;
+
+  ellipse {
+    fill: var(--color-accent);
+    fill-opacity: 0.75;
+    stroke: var(--color-bg-subtle);
+    stroke-width: 1.5;
+  }
+
+  circle {
+    fill: var(--color-text);
+  }
+}
+
+.sensor {
+  position: absolute;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.7rem;
+  translate: -50% -50%;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  white-space: nowrap;
+}
+
+.sensorDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 4px var(--color-accent-soft);
+}
+
+.wave {
+  position: absolute;
+  right: 8%;
+  bottom: 9%;
+  left: 8%;
+  width: 84%;
+  height: 16%;
+
+  path {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+}

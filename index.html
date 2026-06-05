@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3f1ec" />
+    <script>
+      // Apply a stored theme before first paint to avoid a flash of the wrong theme.
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          if (stored === 'light' || stored === 'dark') document.documentElement.dataset.theme = stored;
+        } catch (e) {}
+      })();
+    </script>
+
+    <title>Jeya Balaji C K - Frontend Developer · React &amp; TypeScript</title>
+    <meta
+      name="description"
+      content="Jeya Balaji C K is a software engineer focused on frontend development - building scalable, responsive web applications with React.js, TypeScript, Redux Toolkit, RTK Query and REST APIs."
+    />
+    <meta
+      name="keywords"
+      content="Jeya Balaji C K, frontend developer, React developer, TypeScript developer, software engineer, Redux Toolkit, RTK Query, Bangalore, portfolio"
+    />
+    <meta name="author" content="Jeya Balaji C K" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Jeya Balaji C K" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:title" content="Jeya Balaji C K - Frontend Developer" />
+    <meta
+      property="og:description"
+      content="Software engineer building scalable, responsive web applications with React.js, TypeScript and Redux Toolkit."
+    />
+    <meta property="profile:first_name" content="Jeya Balaji" />
+    <meta property="profile:last_name" content="C K" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jeya Balaji C K - Frontend Developer" />
+    <meta
+      name="twitter:description"
+      content="Software engineer building scalable, responsive web applications with React.js, TypeScript and Redux Toolkit."
+    />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="google-site-verification" content="-j7WKHFXh76Jr3bPoWDgLuZ1ZmorIaxb_shQFNOElFA" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "ProfilePage",
+            "@id": "__SITE_URL__/#profilepage",
+            "url": "__SITE_URL__/",
+            "name": "Jeya Balaji C K - Frontend Developer",
+            "description": "Portfolio of Jeya Balaji C K, a frontend-focused software engineer building scalable, responsive web applications with React.js and TypeScript.",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "__SITE_URL__/#website" },
+            "mainEntity": { "@id": "__SITE_URL__/#person" },
+            "primaryImageOfPage": { "@type": "ImageObject", "url": "__SITE_URL__/og-image.png", "width": 1200, "height": 630 }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "__SITE_URL__/#website",
+            "url": "__SITE_URL__/",
+            "name": "Jeya Balaji C K",
+            "inLanguage": "en",
+            "publisher": { "@id": "__SITE_URL__/#person" }
+          },
+          {
+            "@type": "Person",
+            "@id": "__SITE_URL__/#person",
+            "name": "Jeya Balaji C K",
+            "url": "__SITE_URL__/",
+            "image": "__SITE_URL__/og-image.png",
+            "email": "mailto:jeyabalajichandrasekaran@gmail.com",
+            "jobTitle": "Software Engineer - UI",
+            "description": "Software engineer focused on frontend development with React.js, TypeScript, Redux Toolkit and RTK Query.",
+            "worksFor": { "@type": "Organization", "name": "CodeMagen Technologies" },
+            "alumniOf": { "@type": "CollegeOrUniversity", "name": "Kongu Engineering College" },
+            "address": { "@type": "PostalAddress", "addressLocality": "Bangalore", "addressRegion": "Karnataka", "addressCountry": "IN" },
+            "knowsAbout": [
+              "React.js",
+              "TypeScript",
+              "JavaScript",
+              "Redux Toolkit",
+              "RTK Query",
+              "REST APIs",
+              "Microfrontend Architecture",
+              "Frontend Performance Optimization",
+              "Jest"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "professional enquiries",
+              "email": "jeyabalajichandrasekaran@gmail.com",
+              "url": "__SITE_URL__/#contact",
+              "availableLanguage": ["English"]
+            },
+            "sameAs": [
+              "https://github.com/jeyabalaji-ck",
+              "https://www.linkedin.com/in/jeyabalaji-ck",
+              "https://leetcode.com/u/jeyabalaji-ck"
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <main style="max-width: 40rem; padding: 2rem 1rem; font-family: system-ui, sans-serif; line-height: 1.6">
+        <h1>Jeya Balaji C K - Frontend Developer</h1>
+        <p>
+          Software engineer focused on frontend development, building scalable, responsive web
+          applications with React.js, TypeScript, Redux Toolkit and RTK Query. Based in Bangalore, India.
+        </p>
+        <p>
+          This portfolio needs JavaScript for the full experience. To get in touch, email
+          <a href="mailto:jeyabalajichandrasekaran@gmail.com">jeyabalajichandrasekaran@gmail.com</a> or find me on
+          <a href="https://github.com/jeyabalaji-ck">GitHub</a> and
+          <a href="https://www.linkedin.com/in/jeyabalaji-ck">LinkedIn</a>.
+        </p>
+      </main>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

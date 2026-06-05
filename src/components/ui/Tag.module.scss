@@ -1,0 +1,31 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  line-height: 1.4;
+  white-space: nowrap;
+  transition:
+    color var(--duration-base) ease,
+    border-color var(--duration-base) ease,
+    background-color var(--duration-base) ease;
+}
+
+.sm {
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+}
+
+.md {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+}

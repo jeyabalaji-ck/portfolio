@@ -1,0 +1,113 @@
+@use '../../styles/mixins' as *;
+
+.footer {
+  position: relative;
+  overflow: clip;
+  padding-top: clamp(4rem, 8vw, 6rem);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.top {
+  display: grid;
+  gap: 2.5rem;
+
+  @include up(md) {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto;
+    align-items: start;
+  }
+}
+
+.identity p {
+  margin: 0;
+}
+
+.name {
+  color: var(--color-text);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.role {
+  margin-top: 0.375rem !important;
+  color: var(--color-text-faint);
+}
+
+.navList {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 0.5rem 2.5rem;
+
+  a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat;
+    transition:
+      color var(--duration-base) ease,
+      background-size var(--duration-slow) var(--ease-expo);
+
+    &:hover {
+      color: var(--color-text);
+      background-size: 100% 1px;
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+      border-radius: 2px;
+    }
+  }
+}
+
+.aside {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+
+  @include up(md) {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+
+.backTop {
+  min-height: 2.75rem;
+  font-size: var(--text-sm);
+}
+
+.bottom {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+}
+
+.meta {
+  margin: 0;
+  color: var(--color-text-faint);
+}
+
+// The name, set edge to edge as the final frame of the page.
+.giant {
+  display: flex;
+  justify-content: center;
+  margin: clamp(1rem, 3vw, 2rem) 0 0;
+  padding-inline: var(--gutter);
+  color: var(--color-text);
+  font-size: clamp(3rem, 14.4vw, 17rem);
+  font-weight: 600;
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.mask {
+  display: inline-block;
+  overflow: clip;
+  padding-bottom: 0.06em;
+
+  > span {
+    display: inline-block;
+  }
+}

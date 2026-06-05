@@ -1,0 +1,26 @@
+@use '../../styles/mixins' as *;
+
+.split {
+  display: inline;
+}
+
+// Padding plus an equal negative margin gives descenders and italic overhangs
+// room inside the mask without changing the line box.
+.mask {
+  display: inline-block;
+  overflow: clip;
+  padding: 0.06em 0.08em 0.14em;
+  margin: -0.06em -0.08em -0.14em;
+  vertical-align: top;
+}
+
+.word {
+  display: inline-block;
+  will-change: transform;
+}
+
+.accent {
+  @include serif-accent;
+  color: var(--color-accent);
+  padding-right: 0.04em;
+}

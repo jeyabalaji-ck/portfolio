@@ -1,0 +1,119 @@
+@use '../../styles/mixins' as *;
+
+.button {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.25rem;
+  padding: 0 1.625rem;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-size: 0.9375rem;
+  font-weight: 550;
+  letter-spacing: -0.005em;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
+
+  // The fill rises from below on hover rather than switching colour abruptly.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    transform: translateY(101%);
+    transition: transform var(--duration-slow) var(--ease-expo);
+  }
+
+  @include hover {
+    &::before {
+      transform: translateY(0);
+    }
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  // Busy buttons stay focusable (aria-disabled, not disabled) but look inert.
+  &[aria-disabled='true'] {
+    cursor: progress;
+    opacity: 0.72;
+
+    &::before {
+      transform: translateY(101%);
+    }
+  }
+}
+
+.inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.icon {
+  flex-shrink: 0;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+@include up(md) {
+  .button:hover .icon {
+    transform: translateX(3px);
+  }
+}
+
+.primary {
+  background: var(--color-text);
+  color: var(--color-bg);
+
+  &::before {
+    background: var(--color-accent);
+  }
+
+  @include hover {
+    color: var(--color-accent-contrast);
+  }
+}
+
+.secondary {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+
+  &::before {
+    background: var(--color-text);
+  }
+
+  @include hover {
+    border-color: var(--color-text);
+    color: var(--color-bg);
+  }
+}
+
+.ghost {
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  color: var(--color-text-muted);
+
+  &::before {
+    background: var(--color-bg-subtle);
+  }
+
+  @include hover {
+    color: var(--color-text);
+  }
+}
+
+@media (forced-colors: active) {
+  .button {
+    border-color: ButtonText;
+  }
+}

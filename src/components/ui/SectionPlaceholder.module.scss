@@ -1,0 +1,42 @@
+.placeholder {
+  min-height: 100vh;
+  padding-block: clamp(4.5rem, 9vw, 7.5rem);
+  border-top: 1px solid var(--color-border);
+}
+
+.inner {
+  display: grid;
+  gap: 1rem;
+}
+
+%bar {
+  display: block;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-subtle);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.lineShort {
+  @extend %bar;
+  width: 8rem;
+  height: 0.75rem;
+}
+
+.lineLong {
+  @extend %bar;
+  width: min(28rem, 80%);
+  height: 2.25rem;
+}
+
+.block {
+  @extend %bar;
+  height: 18rem;
+  margin-top: 2rem;
+  border-radius: var(--radius-lg);
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.55;
+  }
+}

@@ -1,0 +1,108 @@
+@use '../../styles/mixins' as *;
+
+.layout {
+  display: grid;
+  gap: 3.5rem;
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+}
+
+.columnTitle {
+  margin-bottom: 1.25rem;
+  color: var(--color-text-faint);
+  @include mono-label;
+}
+
+.entries {
+  display: grid;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem 1.5rem;
+  padding-block: 1.5rem;
+  border-top: 1px solid var(--color-border-strong);
+
+  &:last-child {
+    border-bottom: 1px solid var(--color-border-strong);
+  }
+
+  @include up(md) {
+    grid-template-columns: minmax(0, 1fr) 11rem auto;
+    align-items: baseline;
+  }
+}
+
+.entryMain {
+  grid-column: 1 / -1;
+
+  @include up(md) {
+    grid-column: 1;
+  }
+}
+
+.degree {
+  font-size: var(--text-2xl);
+  letter-spacing: -0.035em;
+}
+
+.institution {
+  margin: 0.375rem 0 0;
+  color: var(--color-text-muted);
+}
+
+.period {
+  color: var(--color-text-faint);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.score {
+  margin: 0;
+  justify-self: end;
+  color: var(--color-text);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.certs {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.cert {
+  display: flex;
+  gap: 0.875rem;
+  padding: 1.125rem 1.25rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  transition: border-color var(--duration-base) ease;
+
+  @include hover {
+    border-color: var(--color-accent);
+  }
+}
+
+.certIcon {
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+  color: var(--color-accent);
+}
+
+.certName {
+  display: block;
+  font-weight: 500;
+}
+
+.issuer {
+  display: block;
+  margin-top: 0.125rem;
+  color: var(--color-text-faint);
+  font-size: var(--text-sm);
+}

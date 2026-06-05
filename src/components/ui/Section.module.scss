@@ -1,0 +1,57 @@
+@use '../../styles/mixins' as *;
+
+.section {
+  position: relative;
+  padding-block: var(--section-space);
+}
+
+.header {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: clamp(3rem, 6vw, 5.5rem);
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+    column-gap: 4rem;
+    align-items: end;
+  }
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  color: var(--color-text-muted);
+  @include mono-label;
+
+  @include up(lg) {
+    grid-column: 1 / -1;
+  }
+}
+
+.index {
+  color: var(--color-accent);
+}
+
+.rule {
+  flex: 0 0 3rem;
+  height: 1px;
+  background: var(--color-border-strong);
+}
+
+.title {
+  @include display;
+  max-width: 16ch;
+}
+
+.intro {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-md);
+  line-height: 1.6;
+
+  @include up(lg) {
+    padding-bottom: 0.5rem;
+  }
+}

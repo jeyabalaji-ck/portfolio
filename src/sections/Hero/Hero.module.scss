@@ -1,0 +1,231 @@
+@use '../../styles/mixins' as *;
+
+.hero {
+  --hero-size: clamp(2.75rem, 7vw + 0.2rem, 7.75rem);
+  --hero-leading: 0.94;
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-top: calc(var(--header-height) + clamp(1.5rem, 5vh, 3.5rem));
+  padding-bottom: clamp(2rem, 6vh, 4rem);
+  overflow: clip;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+// Faint engineering grid, fading out from the upper right.
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 88px 88px;
+  background-position: center top;
+  mask-image: radial-gradient(ellipse 60% 55% at 72% 38%, #000 10%, transparent 72%);
+  opacity: 0.7;
+}
+
+.glow {
+  position: absolute;
+  left: 72%;
+  top: 40%;
+  width: min(70rem, 110vw);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--color-glow), transparent 72%);
+  will-change: transform;
+}
+
+.inner {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  // Without an explicit column the headline's max-content width would widen the grid.
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  gap: clamp(2rem, 5vh, 3.5rem);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  color: var(--color-text-muted);
+  @include mono-label;
+
+  p {
+    margin: 0;
+  }
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pulse {
+  position: relative;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    animation: pulse 2.4s var(--ease-out) infinite;
+  }
+}
+
+.place {
+  color: var(--color-text-faint);
+}
+
+.stage {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 0;
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--hero-size);
+  font-weight: 600;
+  line-height: var(--hero-leading);
+  letter-spacing: -0.052em;
+  text-wrap: initial;
+  will-change: transform;
+}
+
+.line {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+
+  @include up(md) {
+    white-space: nowrap;
+
+    &:nth-child(2) {
+      padding-left: 0.95em;
+    }
+  }
+}
+
+.mask {
+  display: inline-block;
+  overflow: clip;
+  padding: 0.04em 0.07em 0.13em;
+  margin: -0.04em -0.07em -0.13em;
+  vertical-align: top;
+
+  > span {
+    display: inline-block;
+  }
+}
+
+.accent {
+  @include serif-accent;
+  color: var(--color-accent);
+  letter-spacing: -0.03em;
+}
+
+.visual {
+  display: none;
+
+  // Sits above the second headline line so the type and the window layer without colliding.
+  @include up(xl) {
+    position: absolute;
+    right: 0;
+    bottom: calc(2 * var(--hero-leading) * var(--hero-size) + 1.5rem);
+    display: block;
+    width: clamp(24rem, 30vw, 28rem);
+  }
+
+  @media (max-height: 820px) {
+    display: none;
+  }
+}
+
+.tilt {
+  transform-style: preserve-3d;
+}
+
+.bottom {
+  display: grid;
+  gap: 2rem;
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 36rem) auto;
+    justify-content: space-between;
+    align-items: end;
+    gap: 4rem;
+  }
+}
+
+.lede {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-md);
+  line-height: 1.65;
+
+  strong {
+    color: var(--color-text);
+    font-weight: 550;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+
+  @include up(lg) {
+    align-items: flex-end;
+  }
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+
+  @include down(sm) {
+    width: 100%;
+
+    > * {
+      flex: 1 1 10rem;
+    }
+  }
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.7;
+    scale: 1;
+  }
+
+  to {
+    opacity: 0;
+    scale: 3;
+  }
+}
