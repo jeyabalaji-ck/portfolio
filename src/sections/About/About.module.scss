@@ -4,24 +4,24 @@
   position: relative;
   z-index: 1;
   overflow: clip;
-  padding-bottom: clamp(3rem, 6vw, 5rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
   background: var(--color-bg-elevated);
   border-top: 1px solid var(--color-border);
 }
 
 .section {
-  padding-bottom: clamp(3rem, 6vw, 5rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
 // ---- Statement (left) and description (right) ----
 
 .intro {
   display: grid;
-  gap: clamp(3rem, 6vw, 4rem);
+  gap: clamp(2rem, 5vw, 3rem);
 
   @include up(lg) {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: clamp(3rem, 6vw, 6.5rem);
+    gap: clamp(2.5rem, 5vw, 4.5rem);
     align-items: start;
   }
 }
@@ -30,8 +30,8 @@
   margin: 0;
   font-size: var(--text-statement);
   font-weight: 500;
-  line-height: 1.12;
-  letter-spacing: -0.035em;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
   text-wrap: pretty;
 
   @include up(lg) {
@@ -43,26 +43,26 @@
 .keyword {
   @include serif-accent;
   color: var(--color-accent);
-  font-size: 1.08em;
+  font-size: 1.06em;
 }
 
 .side {
   display: grid;
-  gap: 3rem;
+  gap: 2rem;
 }
 
 .body {
   color: var(--color-text-muted);
-  font-size: var(--text-md);
+  font-size: var(--text-base);
 
   p {
-    margin: 0 0 1.25rem;
+    margin: 0 0 1rem;
   }
 
   p:first-child {
     color: var(--color-text);
-    font-size: var(--text-lg);
-    line-height: 1.55;
+    font-size: var(--text-md);
+    line-height: 1.6;
   }
 
   p:last-child {
@@ -83,7 +83,7 @@
 .row {
   display: grid;
   gap: 0.25rem;
-  padding-block: 0.875rem;
+  padding-block: 0.625rem;
   border-bottom: 1px solid var(--color-border);
 
   @include up(sm) {
@@ -98,6 +98,7 @@
 
   dd {
     margin: 0;
+    font-size: var(--text-sm);
     font-weight: 500;
   }
 }
@@ -105,11 +106,11 @@
 // ---- Focus areas: a technical grid whose rules draw in as it arrives ----
 
 .focus {
-  margin-top: clamp(5rem, 10vw, 8rem);
+  margin-top: clamp(3rem, 6vw, 4.5rem);
 }
 
 .focusTitle {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: var(--color-text-faint);
   @include mono-label;
 }
@@ -131,8 +132,8 @@
   position: relative;
   display: grid;
   align-content: start;
-  gap: 0.625rem;
-  padding: 1.5rem 1.25rem 2rem 0;
+  gap: 0.5rem;
+  padding: 1.125rem 1.25rem 1.5rem 0;
 
   // Top rule, drawn in by the section's motion.
   &::before {
@@ -179,8 +180,8 @@
 }
 
 .focusName {
-  font-size: var(--text-xl);
-  letter-spacing: -0.03em;
+  font-size: var(--text-lg);
+  letter-spacing: -0.02em;
 }
 
 .focusDetail {
@@ -194,8 +195,8 @@
 
 .stats {
   display: grid;
-  gap: 2rem;
-  margin-top: clamp(4rem, 8vw, 6rem);
+  gap: 1.5rem;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
 
   @include up(md) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -203,16 +204,16 @@
 }
 
 .stat {
-  padding-top: 1.25rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--color-border-strong);
 }
 
 .figure {
-  margin: 0 0 0.75rem;
-  font-size: clamp(3.5rem, 6vw, 6rem);
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 2vw + 1.1rem, 3rem);
   font-weight: 600;
-  line-height: 0.9;
-  letter-spacing: -0.05em;
+  line-height: 1;
+  letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
 }
 
@@ -228,7 +229,7 @@
 .tags {
   display: grid;
   justify-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   overflow: clip;
   pointer-events: none;
   user-select: none;
@@ -236,19 +237,19 @@
 
 .tagRow {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.5rem;
   width: max-content;
   margin: 0;
   will-change: transform;
 }
 
 .tag {
-  padding: 0.625rem 1.125rem;
+  padding: 0.375rem 0.8125rem;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-pill);
   color: var(--color-text-muted);
   font-family: var(--font-mono);
-  font-size: clamp(0.75rem, 0.4vw + 0.65rem, 0.9375rem);
+  font-size: 0.75rem;
   white-space: nowrap;
 
   &:nth-child(3n + 1) {

@@ -31,7 +31,7 @@
   position: relative;
   width: min(100%, 64rem);
   margin: clamp(1rem, 5vh, 3rem) auto;
-  padding: clamp(1.5rem, 4vw, 3.5rem);
+  padding: clamp(1.25rem, 3vw, 2.5rem);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   background: var(--color-bg-elevated);
@@ -93,7 +93,7 @@
 
 .title {
   max-width: 18ch;
-  font-size: clamp(2.25rem, 4vw + 0.75rem, 4.5rem);
+  font-size: clamp(1.625rem, 1.8vw + 1rem, 2.625rem);
   line-height: 0.95;
   letter-spacing: -0.05em;
 }
@@ -102,13 +102,13 @@
   max-width: 44rem;
   margin: 1.5rem 0 0;
   color: var(--color-text-muted);
-  font-size: var(--text-lg);
+  font-size: var(--text-md);
   line-height: 1.55;
 }
 
 .visual {
-  height: clamp(14rem, 36vw, 24rem);
-  margin-top: clamp(2rem, 4vw, 3rem);
+  height: clamp(12rem, 30vw, 20rem);
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
 }
 
 .blocks {

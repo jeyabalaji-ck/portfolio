@@ -36,18 +36,18 @@ export function useProjectsMotion(scope: RefObject<HTMLElement | null>) {
         if (!horizontal) {
           slides.forEach((slide) => {
             gsap.from(slide, {
-              y: 60,
+              y: 28,
               opacity: 0,
-              duration: 1.1,
+              duration: 0.9,
               ease: 'expo.out',
               scrollTrigger: { trigger: slide, start: 'top 90%', once: true },
             });
             const layers = slide.querySelectorAll<HTMLElement>('[data-depth]');
             gsap.fromTo(
               layers,
-              { y: (_: number, element: HTMLElement) => Number(element.dataset.depth) * 12 },
+              { y: (_: number, element: HTMLElement) => Number(element.dataset.depth) * 6 },
               {
-                y: (_: number, element: HTMLElement) => Number(element.dataset.depth) * -12,
+                y: (_: number, element: HTMLElement) => Number(element.dataset.depth) * -6,
                 ease: 'none',
                 scrollTrigger: { trigger: slide, start: 'top bottom', end: 'bottom top', scrub: 0.8 },
               },
@@ -90,26 +90,26 @@ export function useProjectsMotion(scope: RefObject<HTMLElement | null>) {
           const bigIndex = slide.querySelector<HTMLElement>('[data-project-index]');
           const inView = { trigger: slide, containerAnimation: travel, scrub: true };
 
-          // Panels after the first arrive slightly small and settle to full size.
+          // Panels after the first arrive a touch small and settle to full size.
           if (card && index > 0) {
             gsap.fromTo(
               card,
-              { scale: 0.88, rotate: 1.5 },
-              { scale: 1, rotate: 0, ease: 'none', scrollTrigger: { ...inView, start: 'left right', end: 'left 35%' } },
+              { scale: 0.95, opacity: 0.6 },
+              { scale: 1, opacity: 1, ease: 'none', scrollTrigger: { ...inView, start: 'left right', end: 'left 35%' } },
             );
           }
           if (stage) {
             gsap.fromTo(
               stage,
-              { xPercent: 9 },
-              { xPercent: -9, ease: 'none', scrollTrigger: { ...inView, start: 'left right', end: 'right left' } },
+              { xPercent: 4 },
+              { xPercent: -4, ease: 'none', scrollTrigger: { ...inView, start: 'left right', end: 'right left' } },
             );
           }
           if (bigIndex) {
             gsap.fromTo(
               bigIndex,
-              { xPercent: 60 },
-              { xPercent: -30, ease: 'none', scrollTrigger: { ...inView, start: 'left right', end: 'right left' } },
+              { xPercent: 25 },
+              { xPercent: -12, ease: 'none', scrollTrigger: { ...inView, start: 'left right', end: 'right left' } },
             );
           }
         });

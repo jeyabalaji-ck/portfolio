@@ -1,22 +1,20 @@
 @use '../../styles/mixins' as *;
 
-// The closing scene: full height, headline-scale type and a warm glow.
+// The closing scene: a clear headline and a warm glow.
 .section {
   position: relative;
   isolation: isolate;
   display: flex;
   align-items: center;
-  min-height: 100vh;
-  min-height: 100svh;
   overflow: clip;
   border-top: 1px solid var(--color-border);
 }
 
 .header h2 {
-  max-width: 10ch;
-  font-size: clamp(3.25rem, 9.6vw + 0.25rem, 11rem);
-  line-height: 0.88;
-  letter-spacing: -0.06em;
+  max-width: 14ch;
+  font-size: clamp(2.125rem, 3.4vw + 1.1rem, 4.25rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
 
   // The serif accent reads better in its natural case.
@@ -70,7 +68,7 @@
   bottom: -30%;
   left: 50%;
   z-index: -1;
-  width: min(80rem, 140vw);
+  width: min(60rem, 130vw);
   aspect-ratio: 1;
   translate: -50% 0;
   border-radius: 50%;
@@ -80,11 +78,11 @@
 
 .layout {
   display: grid;
-  gap: 3rem;
+  gap: 2.5rem;
 
   @include up(lg) {
     grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
-    gap: clamp(3rem, 5vw, 5rem);
+    gap: clamp(2.5rem, 4vw, 4rem);
     align-items: start;
   }
 }
@@ -96,7 +94,7 @@
 
 .aside {
   display: grid;
-  gap: 2.5rem;
+  gap: 2rem;
 
   @include up(lg) {
     padding-top: 0.5rem;
@@ -104,7 +102,7 @@
 }
 
 .block + .block {
-  padding-top: 2.5rem;
+  padding-top: 2rem;
   border-top: 1px solid var(--color-border);
 }
 
@@ -120,9 +118,9 @@
   max-width: 100%;
   padding-bottom: 0.25rem;
   color: var(--color-text);
-  font-size: clamp(1.0625rem, 0.9vw + 0.6rem, 1.5rem);
+  font-size: clamp(1rem, 0.5vw + 0.85rem, 1.25rem);
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   line-height: 1.2;
   text-decoration: none;
   overflow-wrap: anywhere;
@@ -161,9 +159,9 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  min-height: 2.5rem;
-  margin-top: 1rem;
-  padding: 0 1rem;
+  min-height: 2.25rem;
+  margin-top: 0.875rem;
+  padding: 0 0.875rem;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-pill);
   background: transparent;
@@ -206,7 +204,7 @@
 
 .steps {
   display: grid;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 .step {
@@ -226,6 +224,7 @@
 .stepTitle {
   display: block;
   color: var(--color-text);
+  font-size: var(--text-sm);
   font-weight: 600;
 }
 

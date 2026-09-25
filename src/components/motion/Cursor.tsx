@@ -5,12 +5,16 @@ import styles from './Cursor.module.scss';
 
 const QUERY = `${media.pointer} and (forced-colors: none)`;
 const INTERACTIVE = 'a, button, [role="button"], label, summary';
+/** Text fields keep the native I-beam, so the arrow steps aside over them. */
+const TEXT_FIELD = 'input, textarea, select, [contenteditable="true"]';
 
 /**
- * A two-part cursor for precise pointers: a dot that tracks the pointer
- * exactly and a ring that trails it. Elements can set `data-cursor` to show a
- * short label. It never renders on touch devices, with reduced motion or in
- * forced-colors mode, where the system cursor is kept.
+ * A single small arrow icon that replaces the system pointer on precise
+ * pointers. Its tip is the hotspot, so it lands exactly where a click will.
+ * Over interactive elements it tints and nudges slightly larger; elements can
+ * set `data-cursor` to show a short label beside it. It never renders on touch
+ * devices, with reduced motion or in forced-colors mode, where the system
+ * cursor is kept.
  */
 export function Cursor() {
   const enabled = useMediaQuery(QUERY);
@@ -18,17 +22,14 @@ export function Cursor() {
 
   useEffect(() => {
     const root = rootRef.current;
-    const dot = root?.querySelector<HTMLElement>('[data-dot]');
-    const ring = root?.querySelector<HTMLElement>('[data-ring]');
+    const pointer = root?.querySelector<HTMLElement>('[data-pointer]');
     const label = root?.querySelector<HTMLElement>('[data-label]');
-    if (!enabled || !root || !dot || !ring || !label) return;
+    if (!enabled || !root || !pointer || !label) return;
 
     document.documentElement.classList.add('has-custom-cursor');
-    gsap.set([dot, ring], { xPercent: -50, yPercent: -50 });
-    const dotX = gsap.quickTo(dot, 'x', { duration: 0.12, ease: 'power3.out' });
-    const dotY = gsap.quickTo(dot, 'y', { duration: 0.12, ease: 'power3.out' });
-    const ringX = gsap.quickTo(ring, 'x', { duration: 0.5, ease: 'power3.out' });
-    const ringY = gsap.quickTo(ring, 'y', { duration: 0.5, ease: 'power3.out' });
+    // A short follow keeps the motion smooth without the tip drifting from the real pointer.
+    const x = gsap.quickTo(pointer, 'x', { duration: 0.12, ease: 'power3.out' });
+    const y = gsap.quickTo(pointer, 'y', { duration: 0.12, ease: 'power3.out' });
     let visible = false;
 
     const onMove = (event: PointerEvent) => {
@@ -36,18 +37,18 @@ export function Cursor() {
       if (!visible) {
         visible = true;
         root.dataset.visible = 'true';
-        gsap.set([dot, ring], { x: event.clientX, y: event.clientY });
+        gsap.set(pointer, { x: event.clientX, y: event.clientY });
       }
-      dotX(event.clientX);
-      dotY(event.clientY);
-      ringX(event.clientX);
-      ringY(event.clientY);
+      x(event.clientX);
+      y(event.clientY);
     };
 
     const onOver = (event: PointerEvent) => {
       const target = event.target instanceof Element ? event.target : null;
       const labelled = target?.closest<HTMLElement>('[data-cursor]');
-      if (labelled?.dataset.cursor) {
+      if (target?.closest(TEXT_FIELD)) {
+        root.dataset.state = 'text';
+      } else if (labelled?.dataset.cursor) {
         label.textContent = labelled.dataset.cursor;
         root.dataset.state = 'label';
       } else {
@@ -80,7 +81,7 @@ export function Cursor() {
       document.removeEventListener('pointerout', onOut);
       window.removeEventListener('pointerdown', onDown);
       window.removeEventListener('pointerup', onUp);
-      gsap.killTweensOf([dot, ring]);
+      gsap.killTweensOf(pointer);
     };
   }, [enabled]);
 
@@ -94,9 +95,10 @@ export function Cursor() {
       data-state="default"
       data-visible="false"
     >
-      <span data-dot className={styles.dot} />
-      <span data-ring className={styles.ring}>
-        <span className={styles.shape} />
+      <span data-pointer className={styles.pointer}>
+        <svg className={styles.icon} width="16" height="20" viewBox="0 0 16 20" focusable="false">
+          <path d="M1.5 1.5v14.2l3.9-3.7 2.6 5.9 2.5-1.1-2.6-5.8h5.4z" />
+        </svg>
         <span data-label className={styles.label} />
       </span>
     </div>

@@ -1,61 +1,17 @@
-@use '../../styles/mixins' as *;
-
-// Keep in sync with CINEMATIC in Chapter.tsx.
-$cinematic: '(min-width: 1024px) and (prefers-reduced-motion: no-preference)';
+@use '../../styles/tokens' as *;
 
 .chapter {
   position: relative;
-  padding-top: clamp(4rem, 12vw, 7rem);
+  padding-top: clamp(3rem, 7vw, 5rem);
   overflow: clip;
   user-select: none;
-
-  @media #{$cinematic} {
-    height: 200vh;
-    height: 200svh;
-    padding-top: 0;
-    overflow: visible;
-  }
 }
 
 .frame {
-  display: grid;
-  align-content: center;
-  gap: clamp(1rem, 2vw, 1.75rem);
+  width: 100%;
+  max-width: calc(#{$container-max} + var(--gutter) * 2);
+  margin-inline: auto;
   padding-inline: var(--gutter);
-
-  @media #{$cinematic} {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    height: 100svh;
-    overflow: clip;
-  }
-}
-
-.meta {
-  // Without the cinematic hold, the section's own eyebrow follows right below; don't repeat it.
-  display: none;
-  align-items: center;
-  gap: 1rem;
-  margin: 0;
-  color: var(--color-text-muted);
-  @include mono-label;
-
-  @media #{$cinematic} {
-    display: flex;
-    justify-content: center;
-  }
-}
-
-.index {
-  color: var(--color-accent);
-}
-
-.rule {
-  flex: 0 0 4rem;
-  height: 1px;
-  background: var(--color-accent);
-  transform-origin: left center;
 }
 
 .word {
@@ -63,15 +19,11 @@ $cinematic: '(min-width: 1024px) and (prefers-reduced-motion: no-preference)';
   margin: 0;
   font-size: var(--text-giant);
   font-weight: 600;
-  line-height: 0.8;
-  letter-spacing: -0.065em;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
   text-transform: uppercase;
   white-space: nowrap;
   will-change: transform;
-
-  @media #{$cinematic} {
-    justify-self: center;
-  }
 }
 
 // Outline and fill layers: the fill wipes across the outline as the chapter plays.

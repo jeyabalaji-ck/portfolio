@@ -3,7 +3,7 @@ import { gsap, media, useGSAP } from '../../motion/gsap';
 import { whenIntroRevealed } from '../../motion/intro';
 
 /** Horizontal travel (px) of each name line under the pointer, for layered depth. */
-const LINE_DEPTH = [18, 34];
+const LINE_DEPTH = [10, 18];
 
 /**
  * Hero motion in three layers:
@@ -33,14 +33,14 @@ export function useHeroMotion(scope: RefObject<HTMLElement | null>) {
             .timeline({ paused: true })
             .from('[data-hero-char]', {
               yPercent: 110,
-              duration: 1.3,
+              duration: 1,
               ease: 'expo.out',
-              stagger: 0.035,
+              stagger: 0.025,
             })
-            .from('[data-hero-fade]', { y: 28, opacity: 0, duration: 1.1, ease: 'expo.out', stagger: 0.08 }, 0.35)
-            .from('[data-hero-tech]', { y: 18, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.07 }, 0.6)
-            .from('[data-hero-cue]', { opacity: 0, duration: 1 }, 1)
-            .from(glow, { opacity: 0, scale: 0.5, duration: 1.8, ease: 'power2.out' }, 0);
+            .from('[data-hero-fade]', { y: 14, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.07 }, 0.3)
+            .from('[data-hero-tech]', { y: 10, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.06 }, 0.5)
+            .from('[data-hero-cue]', { opacity: 0, duration: 0.8 }, 0.9)
+            .from(glow, { opacity: 0, scale: 0.8, duration: 1.6, ease: 'power2.out' }, 0);
           const unsubscribe = whenIntroRevealed(() => entrance.play());
 
           // 2. Scroll: the lines part, content recedes and the backdrop sinks.
@@ -49,18 +49,18 @@ export function useHeroMotion(scope: RefObject<HTMLElement | null>) {
               scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.6 },
               defaults: { ease: 'none' },
             })
-            .to('[data-hero-line="0"]', { x: desktop ? '-7vw' : '-4vw' }, 0)
-            .to('[data-hero-line="1"]', { x: desktop ? '12vw' : '6vw' }, 0)
-            .to('[data-hero-title]', { yPercent: desktop ? -18 : -8, opacity: 0.12 }, 0)
-            .to('[data-hero-identity]', { y: desktop ? -90 : -30, opacity: 0 }, 0)
-            .to('[data-hero-out]', { y: desktop ? -70 : -30, opacity: 0 }, 0)
+            .to('[data-hero-line="0"]', { x: desktop ? '-2.5vw' : '-1.5vw' }, 0)
+            .to('[data-hero-line="1"]', { x: desktop ? '4vw' : '2vw' }, 0)
+            .to('[data-hero-title]', { yPercent: desktop ? -12 : -6, opacity: 0.25 }, 0)
+            .to('[data-hero-identity]', { y: desktop ? -36 : -16, opacity: 0 }, 0)
+            .to('[data-hero-out]', { y: desktop ? -28 : -16, opacity: 0 }, 0)
             .to('[data-hero-cue]', { opacity: 0, duration: 0.2 }, 0)
-            .to('[data-hero-backdrop]', { yPercent: 28, scale: 1.08 }, 0);
+            .to('[data-hero-backdrop]', { yPercent: 14, scale: 1.03 }, 0);
 
           if (!(pointer && desktop)) return unsubscribe;
 
           // 3. Pointer: quickTo setters only write transforms, so moves never cause layout.
-          const settle = { duration: 1.1, ease: 'power3.out' };
+          const settle = { duration: 1.2, ease: 'power3.out' };
           const lines = gsap.utils
             .toArray<HTMLElement>('[data-hero-line]')
             .map((line) => gsap.quickTo(line, 'xPercent', settle));
@@ -80,12 +80,12 @@ export function useHeroMotion(scope: RefObject<HTMLElement | null>) {
             // Name lines move by a fraction of their own width, converted from px depth.
             lines.forEach((setX, index) => setX(nx * (LINE_DEPTH[index] ?? 12) * 0.12));
             chips.forEach(({ x, y, depth }) => {
-              x(nx * -14 * depth);
-              y(ny * -10 * depth);
+              x(nx * -6 * depth);
+              y(ny * -4 * depth);
             });
             // The glow is anchored at 62% / 42% of the hero; offset it toward the pointer.
-            glowX?.((nx + 0.5 - 0.62) * bounds.width * 0.7);
-            glowY?.((ny + 0.5 - 0.42) * bounds.height * 0.7);
+            glowX?.((nx + 0.5 - 0.62) * bounds.width * 0.45);
+            glowY?.((ny + 0.5 - 0.42) * bounds.height * 0.45);
           };
           const onLeave = () => {
             bounds = null;

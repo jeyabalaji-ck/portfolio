@@ -15,7 +15,7 @@ export function usePanelReveal(ref: RefObject<HTMLElement | null>) {
       mm.add(media.desktop, () => {
         gsap.fromTo(
           panel,
-          { clipPath: 'inset(0% 5% 0% 5% round 2.5rem)' },
+          { clipPath: 'inset(0% 2.5% 0% 2.5% round 1.25rem)' },
           {
             clipPath: 'inset(0% 0% 0% 0% round 0rem)',
             ease: 'none',

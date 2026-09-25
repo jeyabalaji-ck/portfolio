@@ -70,7 +70,7 @@ export function About() {
 
   return (
     <div ref={ref} className={styles.panel} data-about-panel>
-      <Chapter index="01" label="About" />
+      <Chapter label="About" />
 
       <Section
         index="01"

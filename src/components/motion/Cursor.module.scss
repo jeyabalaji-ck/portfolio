@@ -9,88 +9,80 @@
   &[data-visible='true'] {
     opacity: 1;
   }
+
+  // Over text fields the native I-beam takes over.
+  &[data-state='text'] {
+    opacity: 0;
+  }
 }
 
-.dot,
-.ring {
+.pointer {
   position: fixed;
   top: 0;
   left: 0;
   will-change: transform;
 }
 
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-text);
-  transition: scale var(--duration-base) var(--ease-out);
-}
-
-.ring {
-  display: grid;
-  place-items: center;
-  width: 2.25rem;
-  height: 2.25rem;
-}
-
-.shape {
-  grid-area: 1 / 1;
-  width: 100%;
-  height: 100%;
-  border: 1px solid var(--color-text-faint);
-  border-radius: 50%;
+// The arrow's tip sits at (1.5, 1.5) in its viewBox; offset it onto the hotspot.
+.icon {
+  display: block;
+  margin: -1.5px 0 0 -1.5px;
+  overflow: visible;
+  transform-origin: 1.5px 1.5px;
   transition:
-    scale var(--duration-slow) var(--ease-expo),
-    background-color var(--duration-base) ease,
-    border-color var(--duration-base) ease;
+    scale var(--duration-base) var(--ease-out),
+    rotate var(--duration-base) var(--ease-out);
+
+  path {
+    fill: var(--color-text);
+    stroke: var(--color-bg);
+    stroke-width: 1.25;
+    stroke-linejoin: round;
+    paint-order: stroke;
+    transition: fill var(--duration-fast) ease;
+  }
 }
 
+// A small tag beside the arrow; it never sits over the pointer's target.
 .label {
-  grid-area: 1 / 1;
+  position: absolute;
+  top: 1.25rem;
+  left: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: var(--color-accent);
   color: var(--color-accent-contrast);
   font-family: var(--font-mono);
   font-size: 0.625rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
   text-transform: uppercase;
   white-space: nowrap;
   opacity: 0;
-  scale: 0.6;
+  translate: 0 -0.25rem;
   transition:
     opacity var(--duration-fast) ease,
-    scale var(--duration-base) var(--ease-expo);
+    translate var(--duration-base) var(--ease-out);
 }
 
-.cursor[data-state='link'] {
-  .dot {
-    scale: 0;
-  }
-
-  .shape {
-    scale: 1.6;
-    border-color: transparent;
-    background: var(--color-accent-soft);
-  }
-}
-
+.cursor[data-state='link'],
 .cursor[data-state='label'] {
-  .dot {
-    scale: 0;
+  .icon {
+    scale: 1.12;
+    rotate: -8deg;
   }
 
-  .shape {
-    scale: 3.1;
-    border-color: transparent;
-    background: var(--color-accent);
-  }
-
-  .label {
-    opacity: 1;
-    scale: 1;
+  path {
+    fill: var(--color-accent);
   }
 }
 
-.cursor[data-pressed='true'] .shape {
-  scale: 0.8;
+.cursor[data-state='label'] .label {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.cursor[data-pressed='true'] .icon {
+  scale: 0.9;
 }

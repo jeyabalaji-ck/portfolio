@@ -7,12 +7,12 @@
 
 .header {
   display: grid;
-  gap: 1.5rem;
-  margin-bottom: clamp(3rem, 6vw, 5.5rem);
+  gap: 1rem;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
 
   @include up(lg) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
-    column-gap: 4rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+    column-gap: 3rem;
     align-items: end;
   }
 }
@@ -35,20 +35,20 @@
 }
 
 .rule {
-  flex: 0 0 3rem;
+  flex: 0 0 2rem;
   height: 1px;
   background: var(--color-border-strong);
 }
 
 .title {
   @include display;
-  max-width: 16ch;
+  max-width: 22ch;
 }
 
 .intro {
   margin: 0;
   color: var(--color-text-muted);
-  font-size: var(--text-md);
+  font-size: var(--text-base);
   line-height: 1.6;
 
   @include up(lg) {

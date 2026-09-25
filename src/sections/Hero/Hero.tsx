@@ -7,7 +7,7 @@ import { useHeroMotion } from './useHeroMotion';
 import styles from './Hero.module.scss';
 
 /** The name as composed display lines. */
-const nameLines = ['Jeya Balaji', 'C K'];
+const nameLines = ['Jeya Balaji C K'];
 /** The core technologies, shown as the hero's technical signature. */
 const coreTech = ['React', 'TypeScript', 'Redux Toolkit', 'RTK Query'];
 

@@ -28,7 +28,7 @@ export function useAboutMotion(
       mm.add(media.motion, () => {
         gsap.fromTo(
           '[data-statement-word]',
-          { opacity: 0.14 },
+          { opacity: 0.25 },
           {
             opacity: 1,
             ease: 'none',
@@ -46,7 +46,7 @@ export function useAboutMotion(
         gsap
           .timeline({ scrollTrigger: { trigger: '[data-focus-grid]', start: 'top 85%', once: true } })
           .fromTo(items, { '--rule': 0 }, { '--rule': 1, duration: 1.2, ease: 'expo.out', stagger: 0.06 }, 0)
-          .from(items, { y: 36, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.06 }, 0.1);
+          .from(items, { y: 16, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.06 }, 0.1);
 
         gsap.utils.toArray<HTMLElement>('[data-count]').forEach((element) => {
           const target = Number(element.dataset.count);
@@ -55,7 +55,7 @@ export function useAboutMotion(
           element.textContent = (0).toFixed(decimals);
           gsap.to(counter, {
             value: target,
-            duration: 1.8,
+            duration: 1.4,
             ease: 'power2.out',
             scrollTrigger: { trigger: element, start: 'top 90%', once: true },
             onUpdate: () => {

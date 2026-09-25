@@ -57,7 +57,7 @@ body {
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: var(--text-base);
-  line-height: 1.65;
+  line-height: 1.6;
   font-feature-settings: 'cv11', 'ss01', 'ss03';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -71,8 +71,8 @@ h4 {
   margin: 0;
   color: inherit;
   font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
@@ -149,9 +149,18 @@ body::after {
 }
 
 // The custom cursor replaces the pointer only while it is active (fine pointers, motion allowed).
+// Text fields keep the native I-beam, which the arrow icon cannot stand in for.
 .has-custom-cursor,
-.has-custom-cursor * {
+.has-custom-cursor *:not(input, textarea, select, [contenteditable='true']) {
   cursor: none !important;
+}
+
+.has-custom-cursor :is(input, textarea, [contenteditable='true']) {
+  cursor: text !important;
+}
+
+.has-custom-cursor select {
+  cursor: default !important;
 }
 
 // A section rendered on the opposite palette; components inherit it through the tokens.

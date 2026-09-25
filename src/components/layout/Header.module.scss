@@ -76,13 +76,13 @@
 .monogram {
   display: grid;
   place-items: center;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 1.875rem;
+  height: 1.875rem;
   border-radius: 50%;
   background: var(--color-text);
   color: var(--color-bg);
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   transition:
@@ -98,7 +98,7 @@
 }
 
 .brandName {
-  font-size: 0.9375rem;
+  font-size: var(--text-sm);
 
   @media (max-width: 359.98px) {
     @include visually-hidden;
@@ -143,8 +143,8 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  height: 2.5rem;
-  padding: 0 0.875rem;
+  height: 2.125rem;
+  padding: 0 0.75rem;
   overflow: hidden;
   border-radius: var(--radius-pill);
   color: var(--color-text-muted);
@@ -156,9 +156,9 @@
   &::after {
     content: attr(data-label);
     position: absolute;
-    left: 0.875rem;
+    left: 0.75rem;
     top: 100%;
-    line-height: 2.5rem;
+    line-height: 2.125rem;
     color: var(--color-text);
     transition: translate var(--duration-slow) var(--ease-expo);
   }
@@ -201,7 +201,7 @@
 @media (hover: hover) and (pointer: fine) {
   .link:hover .linkText,
   .link:hover::after {
-    translate: 0 -2.5rem;
+    translate: 0 -2.125rem;
   }
 }
 
@@ -213,8 +213,8 @@
 
 .cta {
   display: none;
-  min-height: 2.75rem;
-  padding-inline: 1.25rem;
+  min-height: 2.25rem;
+  padding-inline: 1rem;
   font-size: var(--text-sm);
 
   @include up(lg) {
@@ -225,8 +225,8 @@
 .iconButton {
   display: inline-grid;
   place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
   padding: 0;
   border: 1px solid var(--color-border-strong);
   border-radius: 50%;
@@ -348,7 +348,7 @@
   padding-block: 0.625rem;
   color: var(--color-text);
   text-decoration: none;
-  @include display(clamp(2.25rem, 9vw, 3.5rem));
+  @include display(clamp(1.625rem, 6vw, 2.25rem));
 
   &[aria-current] {
     color: var(--color-accent);
