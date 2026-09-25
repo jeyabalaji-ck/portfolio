@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from 'react';
 import { Button } from '../../components/ui/Button';
 import { Icon } from '../../components/ui/Icon';
-import { contactFormNote, contactPrivacyNote, contactTopics } from '../../data/contact';
+import { contactFormNote, contactPrivacyNote } from '../../data/contact';
 import { profile } from '../../data/profile';
 import { ContactApiError, sendContactMessage } from '../../services/contactApi';
 import {
