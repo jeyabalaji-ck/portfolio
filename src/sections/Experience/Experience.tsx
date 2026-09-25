@@ -56,13 +56,16 @@ export function Experience() {
           </div>
         </div>
 
-        <ol role="list" className={styles.roles} data-roles>
-          {experience.map((role, index) => (
-            <li key={role.id} data-role-card className={cx(styles.roleItem, index === active && styles.isActive)}>
-              <RoleCard role={role} primary={index === 0} />
-            </li>
-          ))}
-        </ol>
+        <div className={styles.rolesWrap}>
+          <span className={styles.rolesFill} aria-hidden="true" data-roles-fill />
+          <ol role="list" className={styles.roles} data-roles>
+            {experience.map((role, index) => (
+              <li key={role.id} data-role-card className={cx(styles.roleItem, index === active && styles.isActive)}>
+                <RoleCard role={role} primary={index === 0} />
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
     </Section>
   );

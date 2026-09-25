@@ -3,8 +3,9 @@ import type { NavItem, Profile } from '../types/content';
 export const profile: Profile = {
   name: 'Jeya Balaji C K',
   shortName: 'Jeya Balaji',
-  role: 'Software Engineer - Frontend',
-  headline: 'Building scalable, responsive and thoughtful web experiences.',
+  role: 'Frontend Developer',
+  headline:
+    'Building scalable, responsive and high-performance web experiences with React, TypeScript and modern frontend architecture.',
   summary:
     'Software developer specializing in React.js, Redux Toolkit, TypeScript and modern JavaScript - building production web applications with clean state management, reliable API integration and a steady focus on performance.',
   email: 'jeyabalajichandrasekaran@gmail.com',
@@ -36,7 +37,7 @@ export const navItems: NavItem[] = [
   { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
   { id: 'experience', label: 'Experience' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'skills', label: 'Skills' },
+  { id: 'stack', label: 'Stack' },
+  { id: 'projects', label: 'Work' },
   { id: 'contact', label: 'Contact' },
 ];

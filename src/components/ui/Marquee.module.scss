@@ -1,0 +1,59 @@
+.marquee {
+  display: grid;
+  gap: 0.15em;
+  overflow: clip;
+  font-size: clamp(2.5rem, 7.5vw, 7.5rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+}
+
+.row {
+  display: flex;
+  overflow: clip;
+}
+
+.track {
+  display: flex;
+  flex-shrink: 0;
+  width: max-content;
+  will-change: transform;
+}
+
+.group {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+
+  // An em dash separates entries, echoing "REACT - TYPESCRIPT - ...".
+  &::after {
+    content: '';
+    width: 0.6em;
+    height: 0.06em;
+    margin-inline: 0.35em;
+    background: var(--color-accent);
+  }
+}
+
+.outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-border-strong);
+
+  .item::after {
+    background: var(--color-border-strong);
+  }
+}
+
+@media (forced-colors: active) {
+  .outline {
+    color: CanvasText;
+  }
+}

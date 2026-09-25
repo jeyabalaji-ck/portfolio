@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from 're
 import { navItems, profile } from '../../data/profile';
 import { useActiveSection } from '../../hooks/useActiveSection';
 import { useScrollDirection } from '../../hooks/useScrollDirection';
+import { useScrollLock } from '../../hooks/useScrollLock';
 import { gsap, media, useGSAP } from '../../motion/gsap';
 import { whenIntroRevealed } from '../../motion/intro';
 import { cx } from '../../utils/cx';
@@ -18,8 +19,34 @@ export function Header() {
   const [focusWithin, setFocusWithin] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const indicatorRef = useRef<HTMLSpanElement>(null);
   const activeId = useActiveSection(sectionIds);
   const { scrolled, down } = useScrollDirection();
+  useScrollLock(menuOpen);
+
+  // A pill slides behind the active link. Measured on change and resize only, never per frame.
+  useEffect(() => {
+    const list = listRef.current;
+    const indicator = indicatorRef.current;
+    if (!list || !indicator) return;
+
+    const place = () => {
+      const link = activeId ? list.querySelector<HTMLElement>(`a[href="#${activeId}"]`) : null;
+      if (!link) {
+        indicator.style.opacity = '0';
+        return;
+      }
+      indicator.style.opacity = '1';
+      indicator.style.width = `${link.offsetWidth}px`;
+      indicator.style.transform = `translateX(${link.offsetLeft}px)`;
+    };
+
+    place();
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(place);
+    observer?.observe(list);
+    return () => observer?.disconnect();
+  }, [activeId]);
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
@@ -63,7 +90,6 @@ export function Header() {
 
     document.addEventListener('keydown', onKeyDown);
     desktop.addEventListener('change', onViewportChange);
-    document.body.style.overflow = 'hidden';
     // The menu covers the page, so keep keyboard and screen reader focus inside it.
     const background = [document.getElementById('main'), document.getElementById('site-footer')];
     background.forEach((element) => element?.setAttribute('inert', ''));
@@ -71,7 +97,6 @@ export function Header() {
     return () => {
       document.removeEventListener('keydown', onKeyDown);
       desktop.removeEventListener('change', onViewportChange);
-      document.body.style.overflow = '';
       background.forEach((element) => element?.removeAttribute('inert'));
     };
   }, [menuOpen]);
@@ -102,7 +127,10 @@ export function Header() {
           </a>
 
           <nav aria-label="Primary" className={styles.desktopNav} data-header-item>
-            <ul role="list" className={styles.list}>
+            <ul ref={listRef} role="list" className={styles.list}>
+              <li className={styles.indicator} aria-hidden="true">
+                <span ref={indicatorRef} />
+              </li>
               {navItems.map((item) => (
                 <li key={item.id}>
                   <a
@@ -138,7 +166,7 @@ export function Header() {
         </div>
       </header>
 
-      <nav id={MENU_ID} aria-label="Mobile" className={styles.mobileNav} hidden={!menuOpen}>
+      <nav id={MENU_ID} aria-label="Mobile" className={styles.mobileNav} hidden={!menuOpen} data-lenis-prevent>
         <div className={`container ${styles.mobileInner}`}>
           <ul role="list" className={styles.mobileList}>
             {navItems.map((item, index) => (

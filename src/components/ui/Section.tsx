@@ -1,6 +1,5 @@
 import { useRef, type ReactNode } from 'react';
-import { useGSAP } from '../../motion/gsap';
-import { createReveals } from '../../motion/reveal';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 import type { SectionId } from '../../types/content';
 import { cx } from '../../utils/cx';
 import { SplitText } from './SplitText';
@@ -16,7 +15,9 @@ interface SectionProps {
   intro?: ReactNode;
   className?: string;
   headerClassName?: string;
-  children: ReactNode;
+  /** Full-bleed content rendered after the contained content, outside the container. */
+  after?: ReactNode;
+  children?: ReactNode;
 }
 
 export function Section({
@@ -27,12 +28,13 @@ export function Section({
   intro,
   className,
   headerClassName,
+  after,
   children,
 }: SectionProps) {
   const headingId = `${id}-title`;
   const ref = useRef<HTMLElement>(null);
 
-  useGSAP(() => (ref.current ? createReveals(ref.current) : undefined), { scope: ref });
+  useScrollReveal(ref);
 
   return (
     <section ref={ref} id={id} aria-labelledby={headingId} className={cx(styles.section, className)}>
@@ -54,6 +56,7 @@ export function Section({
         </header>
         {children}
       </div>
+      {after}
     </section>
   );
 }

@@ -1,18 +1,21 @@
 @use '../../styles/mixins' as *;
 
 .hero {
-  --hero-size: clamp(2.75rem, 7vw + 0.2rem, 7.75rem);
-  --hero-leading: 0.94;
+  // Sized by width and height so the two name lines always fit the first screen.
+  --name-size: clamp(3rem, min(15vw, 25svh), 14rem);
+  --name-leading: 0.84;
 
   position: relative;
   isolation: isolate;
   display: flex;
   min-height: 100vh;
   min-height: 100svh;
-  padding-top: calc(var(--header-height) + clamp(1.5rem, 5vh, 3.5rem));
-  padding-bottom: clamp(2rem, 6vh, 4rem);
+  padding-top: calc(var(--header-height) + clamp(1rem, 4vh, 2.5rem));
+  padding-bottom: clamp(1.25rem, 3vh, 2rem);
   overflow: clip;
 }
+
+// ---- Backdrop: a drifting engineering grid and a glow that follows the pointer ----
 
 .backdrop {
   position: absolute;
@@ -21,24 +24,34 @@
   pointer-events: none;
 }
 
-// Faint engineering grid, fading out from the upper right.
-.grid {
+.gridMask {
   position: absolute;
   inset: 0;
+  overflow: clip;
+  mask-image: radial-gradient(ellipse 75% 70% at 60% 40%, #000 8%, transparent 75%);
+}
+
+// Oversized by one cell so the drift loops seamlessly; only `transform` animates.
+.grid {
+  position: absolute;
+  inset: -88px 0 0;
   background-image:
     linear-gradient(var(--color-border) 1px, transparent 1px),
     linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
   background-size: 88px 88px;
   background-position: center top;
-  mask-image: radial-gradient(ellipse 60% 55% at 72% 38%, #000 10%, transparent 72%);
-  opacity: 0.7;
+  opacity: 0.8;
+
+  @include motion-ok {
+    animation: grid-drift 14s linear infinite;
+  }
 }
 
 .glow {
   position: absolute;
-  left: 72%;
-  top: 40%;
-  width: min(70rem, 110vw);
+  left: 62%;
+  top: 42%;
+  width: min(68rem, 120vw);
   aspect-ratio: 1;
   translate: -50% -50%;
   border-radius: 50%;
@@ -46,14 +59,15 @@
   will-change: transform;
 }
 
+// ---- Layout ----
+
 .inner {
   position: relative;
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  // Without an explicit column the headline's max-content width would widen the grid.
+  grid-template-rows: auto 1fr auto auto;
   grid-template-columns: minmax(0, 1fr);
   min-width: 0;
-  gap: clamp(2rem, 5vh, 3.5rem);
+  gap: clamp(1.5rem, 4vh, 2.75rem);
 }
 
 .meta {
@@ -96,85 +110,134 @@
   color: var(--color-text-faint);
 }
 
+// ---- Name ----
+
 .stage {
   position: relative;
-  display: flex;
-  align-items: flex-end;
+  display: grid;
+  align-content: end;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
   min-height: 0;
+
+  @include up(lg) {
+    display: block;
+    align-self: end;
+  }
 }
 
-.title {
+.name {
   position: relative;
   z-index: 1;
-  flex: 1 1 auto;
   min-width: 0;
-  font-size: var(--hero-size);
-  font-weight: 600;
-  line-height: var(--hero-leading);
-  letter-spacing: -0.052em;
+  font-size: var(--name-size);
+  font-weight: 650;
+  line-height: var(--name-leading);
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
   text-wrap: initial;
-  will-change: transform;
 }
 
 .line {
-  display: block;
+  display: flex;
   width: max-content;
   max-width: 100%;
-
-  @include up(md) {
-    white-space: nowrap;
-
-    &:nth-child(2) {
-      padding-left: 0.95em;
-    }
-  }
+  white-space: nowrap;
+  will-change: transform;
 }
 
 .mask {
   display: inline-block;
   overflow: clip;
-  padding: 0.04em 0.07em 0.13em;
-  margin: -0.04em -0.07em -0.13em;
-  vertical-align: top;
+  padding: 0.06em 0.02em 0.08em;
+  margin: -0.06em -0.02em -0.08em;
 
   > span {
     display: inline-block;
   }
 }
 
+.space {
+  display: inline-block;
+  width: 0.24em;
+}
+
+// ---- Role and technologies: sit beside "C K" on large screens ----
+
+.identity {
+  display: grid;
+  gap: 1.25rem;
+
+  @include up(lg) {
+    position: absolute;
+    right: 0;
+    bottom: 0.4rem;
+    z-index: 2;
+    justify-items: end;
+    max-width: min(40rem, 58%);
+  }
+}
+
+.role {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  font-size: clamp(1.75rem, 2.4vw + 0.8rem, 3.5rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+.roleRule {
+  flex: 0 0 clamp(2rem, 4vw, 4.5rem);
+  height: 1px;
+  background: var(--color-accent);
+}
+
 .accent {
   @include serif-accent;
   color: var(--color-accent);
-  letter-spacing: -0.03em;
 }
 
-.visual {
-  display: none;
+.tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 
-  // Sits above the second headline line so the type and the window layer without colliding.
-  @include up(xl) {
-    position: absolute;
-    right: 0;
-    bottom: calc(2 * var(--hero-leading) * var(--hero-size) + 1.5rem);
-    display: block;
-    width: clamp(24rem, 30vw, 28rem);
-  }
-
-  @media (max-height: 820px) {
-    display: none;
+  @include up(lg) {
+    justify-content: flex-end;
   }
 }
 
-.tilt {
-  transform-style: preserve-3d;
+.techItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
 }
+
+.techIndex {
+  color: var(--color-accent);
+  font-size: 0.6875rem;
+}
+
+// ---- Statement and actions ----
 
 .bottom {
   display: grid;
-  gap: 2rem;
+  gap: 1.75rem;
 
   @include up(lg) {
-    grid-template-columns: minmax(0, 36rem) auto;
+    grid-template-columns: minmax(0, 34rem) auto;
     justify-content: space-between;
     align-items: end;
     gap: 4rem;
@@ -184,8 +247,8 @@
 .lede {
   margin: 0;
   color: var(--color-text-muted);
-  font-size: var(--text-md);
-  line-height: 1.65;
+  font-size: var(--text-lg);
+  line-height: 1.55;
 
   strong {
     color: var(--color-text);
@@ -200,7 +263,9 @@
   gap: 1.25rem;
 
   @include up(lg) {
-    align-items: flex-end;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
   }
 }
 
@@ -218,6 +283,60 @@
   }
 }
 
+// ---- Scroll cue ----
+
+.cue {
+  display: none;
+  justify-self: center;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-pill);
+  color: var(--color-text-faint);
+  text-decoration: none;
+  @include mono-label;
+  transition: color var(--duration-base) ease;
+
+  &:hover {
+    color: var(--color-text);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  @media (min-width: 768px) and (min-height: 640px) {
+    display: inline-flex;
+  }
+}
+
+.cueTrack {
+  position: relative;
+  width: 1px;
+  height: 1.75rem;
+  overflow: clip;
+  background: var(--color-border-strong);
+}
+
+.cueDot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 45%;
+  background: var(--color-accent);
+
+  @include motion-ok {
+    animation: cue 1.8s var(--ease-in-out) infinite;
+  }
+}
+
+@keyframes grid-drift {
+  to {
+    transform: translate3d(0, 88px, 0);
+  }
+}
+
 @keyframes pulse {
   from {
     opacity: 0.7;
@@ -227,5 +346,15 @@
   to {
     opacity: 0;
     scale: 3;
+  }
+}
+
+@keyframes cue {
+  from {
+    translate: 0 -100%;
+  }
+
+  to {
+    translate: 0 230%;
   }
 }

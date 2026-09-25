@@ -1,0 +1,16 @@
+.bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 70;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+@media (forced-colors: active) {
+  .bar {
+    background: Highlight;
+  }
+}

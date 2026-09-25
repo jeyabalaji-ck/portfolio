@@ -23,12 +23,21 @@ export function Contact() {
       index="09"
       id="contact"
       eyebrow="Contact"
-      title="Let’s build something *useful.*"
-      intro="Hiring for a frontend role, planning a product or curious about my work? Send a message and I’ll reply personally."
+      title="Let’s build something *great.*"
+      intro={
+        <>
+          <span className={styles.available}>
+            <span className={styles.pulse} aria-hidden="true" />
+            Available for frontend / software engineering opportunities.
+          </span>
+          Hiring for a frontend role, planning a product or curious about my work? Send a message and I’ll reply
+          personally.
+        </>
+      }
       className={styles.section}
       headerClassName={styles.header}
     >
-      <div className={styles.glow} aria-hidden="true" />
+      <div className={styles.glow} aria-hidden="true" data-parallax="-30" />
 
       <div className={styles.layout}>
         <div className={styles.primary} data-reveal="fade">

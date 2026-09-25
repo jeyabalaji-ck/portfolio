@@ -13,7 +13,6 @@ function mockFetch(status: number, body: unknown) {
 function fillValidForm() {
   fireEvent.change(screen.getByLabelText('Name'), { target: { value: '  Ada Lovelace ' } });
   fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'ada@example.com' } });
-  fireEvent.click(screen.getByRole('radio', { name: 'Freelance project' }));
   fireEvent.change(screen.getByLabelText('Message'), {
     target: { value: 'I have a React dashboard that needs a rebuild.' },
   });
@@ -69,7 +68,8 @@ describe('ContactForm', () => {
       name: 'Ada Lovelace',
       email: 'ada@example.com',
       company: '',
-      topic: 'Freelance project',
+      // The form no longer asks for a topic; the API files these as a general enquiry.
+      topic: '',
       message: 'I have a React dashboard that needs a rebuild.',
       website: '',
     });

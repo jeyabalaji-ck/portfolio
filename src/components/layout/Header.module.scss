@@ -4,37 +4,44 @@
   position: fixed;
   inset: 0 0 auto;
   z-index: 60;
-  border-bottom: 1px solid transparent;
-  transition:
-    translate var(--duration-slow) var(--ease-expo),
-    background-color var(--duration-base) ease,
-    border-color var(--duration-base) ease;
+  transition: translate var(--duration-slow) var(--ease-expo);
 
   // The frosted backdrop fades in as a layer so the blur itself is never transitioned.
+  // Once scrolled, it tightens into a floating pill (compact state) on larger screens.
   &::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -1;
+    border: 1px solid transparent;
+    border-bottom-color: var(--color-border);
     background: var(--color-header);
     -webkit-backdrop-filter: saturate(160%) blur(14px);
     backdrop-filter: saturate(160%) blur(14px);
     opacity: 0;
-    transition: opacity var(--duration-base) ease;
+    transition:
+      opacity var(--duration-base) ease,
+      inset var(--duration-slow) var(--ease-expo),
+      border-radius var(--duration-slow) var(--ease-expo),
+      border-color var(--duration-base) ease;
   }
 }
 
 .raised {
-  border-bottom-color: var(--color-border);
-
   &::before {
     opacity: 1;
+  }
+
+  @include up(lg) {
+    &::before {
+      inset: 0.625rem max(0.75rem, calc(var(--gutter) - 1.25rem));
+      border-color: var(--color-border-strong);
+      border-radius: var(--radius-pill);
+    }
   }
 }
 
 .open {
-  border-bottom-color: transparent;
-
   &::before {
     opacity: 0;
   }
@@ -107,8 +114,28 @@
 }
 
 .list {
+  position: relative;
   display: flex;
   gap: 0.25rem;
+}
+
+// The pill behind the active link; its position and width are set from Header.tsx.
+.indicator {
+  position: absolute;
+  inset: 0 auto 0 0;
+  pointer-events: none;
+
+  span {
+    display: block;
+    height: 100%;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-soft);
+    opacity: 0;
+    transition:
+      transform var(--duration-slow) var(--ease-expo),
+      width var(--duration-slow) var(--ease-expo),
+      opacity var(--duration-base) ease;
+  }
 }
 
 // Hovering rolls the label up and a duplicate (from `data-label`) in from below.

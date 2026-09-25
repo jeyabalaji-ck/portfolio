@@ -1,25 +1,105 @@
+@use '../../styles/tokens' as *;
 @use '../../styles/mixins' as *;
 
-// Keep in sync with STACKED in useProjectsMotion.ts.
-$stacked: '(min-width: 1024px) and (min-height: 700px)';
-$stack-step: 1.25rem;
+// Keep in sync with HORIZONTAL in useProjectsMotion.ts.
+$horizontal: '(min-width: 1024px) and (min-height: 640px) and (prefers-reduced-motion: no-preference)';
 
-.stack {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1.5rem;
+// The section title is set at chapter scale.
+.sectionHeader h2 {
+  max-width: none;
+  font-size: clamp(3rem, 9vw, 9.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.055em;
 }
 
-.slot {
-  @media #{$stacked} {
-    position: sticky;
-    top: calc(var(--header-height) + 1rem + var(--i) * #{$stack-step});
+// ---- Gallery ----
+
+.gallery {
+  position: relative;
+}
+
+.pin {
+  @media #{$horizontal} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(1rem, 2.5vh, 1.75rem);
+    height: 100vh;
+    height: 100svh;
+    overflow: clip;
   }
 }
 
-.card {
-  --shade: 0;
+.hud {
+  display: none;
 
+  @media #{$horizontal} {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    color: var(--color-text-faint);
+    @include mono-label;
+  }
+}
+
+.hudTrack {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  overflow: hidden;
+  background: var(--color-border-strong);
+}
+
+.hudFill {
+  position: absolute;
+  inset: 0;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.hudCounter {
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+
+  span {
+    color: var(--color-accent);
+  }
+}
+
+.track {
+  position: relative;
+  display: grid;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: calc(#{$container-max} + var(--gutter) * 2);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+
+  @media #{$horizontal} {
+    display: flex;
+    gap: clamp(1.5rem, 2.5vw, 2.5rem);
+    width: max-content;
+    max-width: none;
+    margin: 0;
+    // Line the first and last panels up with the page container's edges.
+    padding-inline: calc(max(0px, (100% - #{$container-max} - var(--gutter) * 2) / 2) + var(--gutter));
+    will-change: transform;
+  }
+}
+
+.slide {
+  min-width: 0;
+
+  @media #{$horizontal} {
+    flex: 0 0 auto;
+    width: min(84vw, 76rem);
+  }
+}
+
+// ---- Project panel ----
+
+.card {
   position: relative;
   isolation: isolate;
   display: grid;
@@ -30,29 +110,17 @@ $stack-step: 1.25rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   background: var(--color-bg-elevated);
-  box-shadow: var(--shadow-float);
+  box-shadow: var(--shadow-card);
   transition: border-color var(--duration-base) ease;
-
-  // Darkens the card as the next one slides over it (driven by --shade).
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    background: var(--color-bg);
-    opacity: var(--shade);
-    pointer-events: none;
-  }
 
   @include up(lg) {
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-    gap: clamp(2rem, 4vw, 4rem);
+    gap: clamp(2rem, 4vw, 3.5rem);
   }
 
-  @media #{$stacked} {
-    height: calc(100vh - var(--header-height) - 5rem);
-    height: calc(100svh - var(--header-height) - 5rem);
-    max-height: 48rem;
+  @media #{$horizontal} {
+    height: calc(100svh - var(--header-height) - 6rem);
+    max-height: 46rem;
     will-change: transform;
   }
 
@@ -62,6 +130,7 @@ $stack-step: 1.25rem;
 }
 
 .content {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -69,6 +138,7 @@ $stack-step: 1.25rem;
 }
 
 .header {
+  position: relative;
   display: grid;
   gap: 1rem;
 }
@@ -87,9 +157,26 @@ $stack-step: 1.25rem;
   color: var(--color-accent);
 }
 
+// An outlined numeral behind the title, drifting against the scroll.
+.bigIndex {
+  position: absolute;
+  top: -0.5rem;
+  right: 0;
+  z-index: -1;
+  color: transparent;
+  font-size: clamp(5rem, 11vw, 11rem);
+  font-weight: 600;
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  -webkit-text-stroke: 1px var(--color-border-strong);
+  pointer-events: none;
+  user-select: none;
+}
+
 .title {
-  font-size: clamp(2rem, 2.6vw + 1rem, 3.5rem);
-  line-height: 0.98;
+  max-width: 14ch;
+  font-size: clamp(2rem, 2.2vw + 1rem, 3.75rem);
+  line-height: 0.96;
   letter-spacing: -0.045em;
   transition: translate var(--duration-slow) var(--ease-expo);
 }
@@ -116,15 +203,17 @@ $stack-step: 1.25rem;
 }
 
 .summary {
+  max-width: 34rem;
   margin: 0;
-  color: var(--color-text);
+  color: var(--color-text-muted);
   font-size: var(--text-md);
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 .highlights {
   display: grid;
   gap: 0.5rem;
+  max-width: 34rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -145,19 +234,24 @@ $stack-step: 1.25rem;
       background: var(--color-accent);
     }
   }
+
+  // Short pinned panels keep the essentials; the full list is always in the case study.
+  @media (min-width: 1024px) and (max-height: 859.98px) and (prefers-reduced-motion: no-preference) {
+    display: none;
+  }
 }
 
 .footer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1.25rem;
+  display: grid;
+  gap: 1.5rem;
   margin-top: auto;
   padding-top: 0.5rem;
 }
 
-.repo {
-  flex-shrink: 0;
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .visualLink {
@@ -165,6 +259,10 @@ $stack-step: 1.25rem;
   min-width: 0;
   border-radius: var(--radius-lg);
   color: inherit;
+
+  &[data-cursor] {
+    cursor: pointer;
+  }
 
   @include down(lg) {
     aspect-ratio: 4 / 3;

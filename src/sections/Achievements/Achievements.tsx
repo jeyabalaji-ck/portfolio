@@ -12,7 +12,7 @@ export function Achievements() {
 
   return (
     <div ref={ref} className="inverse">
-      <Section index="07" id="achievements" eyebrow="Achievements" title="Recognition and *activities*.">
+      <Section index="06" id="achievements" eyebrow="Achievements" title="Recognition and *activities*.">
         <ul role="list" className={styles.highlights} data-reveal="stagger">
           {achievements.map((achievement, index) => (
             <li key={achievement.title} className={cx(styles.card, index === 0 && styles.featured)}>

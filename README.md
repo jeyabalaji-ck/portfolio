@@ -6,7 +6,7 @@ Personal portfolio of Jeya Balaji C K, Software Engineer (Frontend). A single-pa
 
 - **React 19 + TypeScript** (strict) on **Vite**
 - **SCSS modules** with design tokens exposed as CSS custom properties (light/dark themes)
-- **GSAP + ScrollTrigger** (via `@gsap/react`) for the motion system
+- **GSAP + ScrollTrigger** (via `@gsap/react`) for the motion system, with **Lenis** smooth scrolling on GSAP's ticker
 - **Vitest + Testing Library** for unit tests, **ESLint** (typescript-eslint, react-hooks)
 - Self-hosted variable fonts via Fontsource
 
@@ -28,13 +28,15 @@ Personal portfolio of Jeya Balaji C K, Software Engineer (Frontend). A single-pa
 
 ```
 src/
-  components/  layout (header, footer), motion (intro, cursor) and UI primitives
-  sections/    one folder per page section, each with its own motion hook if needed
-  motion/      GSAP setup, shared eases and media conditions, intro signal, scroll reveals
+  components/  layout (header, footer), motion (intro, cursor, scroll progress, chapter cards) and UI primitives (incl. marquee)
+  sections/    one folder per page section, each owning its motion (Hero, About, Experience, Stack,
+               Process, Projects, Achievements, Education, Services, Contact)
+  motion/      GSAP setup, shared eases and media conditions, intro signal, scroll reveals, Lenis smooth scroll
   data/        typed portfolio content - edit copy here, not in components
-  hooks/       theme, active section, magnetic, media query, clipboard and scroll hooks
+  hooks/       smooth scroll, scroll lock, scroll reveal, step activation, velocity marquee, magnetic,
+               theme, active section, media query, clipboard and scroll direction
   styles/      tokens, mixins and global styles
-  services/    API clients (contact form)
+  services/    API clients (contact form, public GitHub data)
   types/       content types
 server/        Express + Nodemailer contact API - see server/README.md
 ```
@@ -50,10 +52,16 @@ The Contact section posts to the Express API in [`server/`](server/README.md), w
 ## Motion
 
 - Every animation is registered through `gsap.matchMedia()`, so it reverts cleanly on unmount and when a media condition changes.
-- `prefers-reduced-motion: reduce` disables the intro, custom cursor, magnetic effects, parallax and scroll reveals; content is fully visible without them.
-- Touch and small screens get lighter motion: no custom cursor, no pointer parallax and no stacked project cards.
+- Smooth scrolling uses Lenis driven by GSAP's ticker (`src/motion/smoothScroll.ts`). It smooths wheel input only (touch keeps native scrolling), routes in-page anchor links, and is never started with reduced motion. Overlays lock scrolling through `useScrollLock`; scrollable overlays carry `data-lenis-prevent`.
+- `prefers-reduced-motion: reduce` disables smooth scrolling, the intro, custom cursor, magnetic effects, parallax, chapter cards, the pinned gallery, marquees and scroll reveals; content is fully visible without them.
+- Touch and small screens get lighter motion: no custom cursor, no pointer parallax, no pinned sections (the Work gallery stacks vertically and chapter cards drift instead of holding).
+- The Work gallery pins and scrolls horizontally on large screens (`HORIZONTAL` in `useProjectsMotion.ts`, mirrored in `Projects.module.scss`). After lazily loaded content mounts or changes height, triggers are re-sorted by document position and refreshed.
 - Elements animated by GSAP never also carry a CSS transition on the same property.
-- Sections declare simple reveals in markup with `data-reveal` (`words`, `fade`, `stagger`, `clip`, `line`); see `src/motion/reveal.ts`.
+- Sections declare simple reveals in markup with `data-reveal` (`words`, `fade`, `stagger`, `clip`, `line`), plus scrubbed `data-parallax` / `data-drift`; see `src/motion/reveal.ts`.
+
+## GitHub data
+
+The Work section shows public GitHub data (repository count, language mix, recently updated repositories) fetched in the browser from the unauthenticated REST API once the block scrolls near. Results are cached for the session; if the API fails or is rate limited, the block falls back to a link to the GitHub profile.
 
 ## Deployment
 

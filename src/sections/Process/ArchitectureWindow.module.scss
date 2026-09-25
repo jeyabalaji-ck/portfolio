@@ -1,0 +1,231 @@
+@use '../../styles/mixins' as *;
+
+// An editor window with its own fixed dark palette, on either theme.
+.window {
+  --ide-bg: #111113;
+  --ide-panel: #17171a;
+  --ide-border: rgb(239 237 232 / 0.1);
+  --ide-text: #e4e2dc;
+  --ide-muted: #8d8a84;
+  --ide-faint: #5c5a55;
+  --ide-accent: #ff8a63;
+
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--ide-border);
+  border-radius: var(--radius-lg);
+  background: var(--ide-bg);
+  box-shadow: var(--shadow-float);
+  color: var(--ide-text);
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 0.25vw + 0.68rem, 0.8125rem);
+}
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--ide-border);
+  background: var(--ide-panel);
+}
+
+.dots {
+  display: flex;
+  gap: 0.375rem;
+
+  span {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    background: #3a3935;
+  }
+}
+
+.filename {
+  color: var(--ide-muted);
+}
+
+.badge {
+  margin-left: auto;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--ide-border);
+  border-radius: var(--radius-pill);
+  color: var(--ide-muted);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+
+  @include up(sm) {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+}
+
+// ---- Explorer ----
+
+.explorer {
+  padding: 1rem 0.5rem 1.25rem 1rem;
+  border-bottom: 1px solid var(--ide-border);
+
+  @include up(sm) {
+    border-right: 1px solid var(--ide-border);
+    border-bottom: 0;
+  }
+}
+
+.explorerTitle {
+  margin: 0 0 0.75rem;
+  color: var(--ide-faint);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tree {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 1.8;
+}
+
+.entry {
+  color: var(--ide-muted);
+  white-space: pre;
+
+  // Desktop with motion: entries appear as their stage is reached.
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    opacity: 0.12;
+    translate: -0.5rem 0;
+    transition:
+      opacity var(--duration-slow) var(--ease-out),
+      translate var(--duration-slow) var(--ease-expo),
+      color var(--duration-base) ease;
+  }
+}
+
+.prefix {
+  color: var(--ide-faint);
+}
+
+.folder {
+  color: var(--ide-text);
+}
+
+.visible {
+  opacity: 1;
+  translate: 0 0;
+}
+
+// Entries added in the current stage, marked like new files in an editor.
+.current {
+  color: var(--ide-accent);
+
+  &::after {
+    content: '  +';
+    color: var(--ide-accent);
+  }
+}
+
+// ---- Editor ----
+
+.editor {
+  display: grid;
+  align-content: start;
+}
+
+.tab {
+  justify-self: start;
+  margin: 0;
+  padding: 0.625rem 1rem;
+  border-right: 1px solid var(--ide-border);
+  border-bottom: 1px solid var(--ide-accent);
+  color: var(--ide-text);
+}
+
+.code {
+  margin: 0;
+  padding: 1rem 1rem 1.25rem 0;
+  list-style: none;
+  line-height: 1.8;
+}
+
+.line {
+  display: flex;
+
+  @include motion-ok {
+    animation: line-in 0.6s var(--ease-expo) both;
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{($i - 1) * 45}ms;
+      }
+    }
+  }
+}
+
+.gutter {
+  flex-shrink: 0;
+  width: 2.5rem;
+  padding-right: 1rem;
+  color: var(--ide-faint);
+  text-align: right;
+  user-select: none;
+}
+
+.text {
+  min-width: 0;
+  white-space: pre-wrap;
+}
+
+.comment {
+  color: var(--ide-faint);
+  font-style: italic;
+
+  &:first-child .text {
+    color: var(--ide-accent);
+    font-style: normal;
+  }
+}
+
+.item .text {
+  color: var(--ide-text);
+}
+
+.path .text {
+  color: #c9d89a;
+}
+
+// ---- Status bar ----
+
+.status {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--ide-border);
+  background: var(--ide-panel);
+  color: var(--ide-muted);
+  font-size: 0.6875rem;
+}
+
+.statusDot {
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-right: 0.35rem;
+  border-radius: 50%;
+  background: var(--ide-accent);
+  vertical-align: middle;
+}
+
+@keyframes line-in {
+  from {
+    opacity: 0;
+    translate: -0.5rem 0;
+  }
+}

@@ -18,6 +18,8 @@ export const skillGroups: SkillGroup[] = [
       'SCSS',
       'Responsive design',
       'Lazy loading',
+      'Angular',
+      'React Native',
     ],
   },
   {
@@ -71,6 +73,7 @@ export const skillGroups: SkillGroup[] = [
       'Spring Security',
       'Spring Data JPA',
       'Hibernate',
+      'Node.js',
       'JWT',
       'Maven',
       'PostgreSQL',

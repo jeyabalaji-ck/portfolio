@@ -1,0 +1,97 @@
+@use '../../styles/mixins' as *;
+
+.list {
+  display: grid;
+  border-top: 1px solid var(--color-border-strong);
+}
+
+.item {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.75rem 1rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem) 0.25rem;
+  border-bottom: 1px solid var(--color-border-strong);
+
+  @include up(lg) {
+    grid-template-columns: 3rem minmax(0, 6fr) minmax(0, 5fr) auto;
+    gap: 2rem;
+  }
+
+  // A soft fill rises behind the row on hover.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-accent-soft);
+    scale: 1 0;
+    transform-origin: bottom;
+    transition: scale var(--duration-slow) var(--ease-expo);
+  }
+
+  @include hover {
+    &::before {
+      scale: 1 1;
+    }
+
+    .title {
+      translate: 0.75rem 0;
+    }
+
+    .index,
+    .arrow {
+      color: var(--color-accent);
+    }
+
+    .arrow {
+      rotate: 45deg;
+    }
+
+    .description {
+      color: var(--color-text);
+    }
+  }
+}
+
+.index {
+  color: var(--color-text-faint);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  transition: color var(--duration-base) ease;
+}
+
+.title {
+  font-size: clamp(1.625rem, 2.6vw + 0.5rem, 3.25rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  transition: translate var(--duration-slow) var(--ease-expo);
+}
+
+.description {
+  grid-column: 2 / -1;
+  max-width: 34rem;
+  margin: 0;
+  color: var(--color-text-muted);
+  transition: color var(--duration-base) ease;
+
+  @include up(lg) {
+    grid-column: auto;
+  }
+}
+
+.arrow {
+  grid-row: 1;
+  grid-column: 3;
+  align-self: center;
+  color: var(--color-text-faint);
+  transition:
+    rotate var(--duration-slow) var(--ease-expo),
+    color var(--duration-base) ease;
+
+  @include up(lg) {
+    grid-column: 4;
+  }
+}

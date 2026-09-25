@@ -1,0 +1,201 @@
+@use '../../styles/mixins' as *;
+
+// The dialog fills the viewport and scrolls; the panel inside is the visible sheet.
+.dialog {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: clamp(0.75rem, 3vw, 2.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+
+  &::backdrop {
+    background: rgb(10 10 11 / 0.72);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
+  &[open] {
+    @include motion-ok {
+      animation: dialog-fade 0.4s ease both;
+    }
+  }
+}
+
+.panel {
+  position: relative;
+  width: min(100%, 64rem);
+  margin: clamp(1rem, 5vh, 3rem) auto;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-float);
+
+  // The sheet is uncovered from the bottom up, like the page's clip reveals.
+  @include motion-ok {
+    animation: panel-in 0.9s var(--ease-expo) both;
+  }
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.counter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin: 0;
+  padding-top: 0.75rem;
+  color: var(--color-text-faint);
+  @include mono-label;
+}
+
+.number {
+  color: var(--color-accent);
+}
+
+.close {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    border-color var(--duration-base) ease,
+    rotate var(--duration-slow) var(--ease-expo);
+
+  &:hover {
+    border-color: var(--color-text);
+    rotate: 90deg;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.title {
+  max-width: 18ch;
+  font-size: clamp(2.25rem, 4vw + 0.75rem, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.summary {
+  max-width: 44rem;
+  margin: 1.5rem 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+  line-height: 1.55;
+}
+
+.visual {
+  height: clamp(14rem, 36vw, 24rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.blocks {
+  display: grid;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.block {
+  display: grid;
+  gap: 0.75rem;
+  padding-block: 1.5rem;
+  border-top: 1px solid var(--color-border);
+
+  @include up(md) {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 2rem;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.label {
+  padding-top: 0.2rem;
+  color: var(--color-accent);
+  @include mono-label;
+}
+
+.blockBody {
+  font-size: var(--text-md);
+  line-height: 1.6;
+}
+
+.points {
+  display: grid;
+  gap: 0.625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-muted);
+
+  li {
+    position: relative;
+    padding-left: 1.25rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0.8em;
+      left: 0;
+      width: 0.5rem;
+      height: 1px;
+      background: var(--color-accent);
+    }
+  }
+}
+
+.result {
+  display: flex;
+  gap: 0.625rem;
+  font-weight: 500;
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    color: var(--color-accent);
+  }
+}
+
+.links {
+  margin-top: 2rem;
+}
+
+@keyframes dialog-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes panel-in {
+  from {
+    clip-path: inset(100% 0% 0% 0% round var(--radius-xl));
+    translate: 0 3rem;
+  }
+
+  to {
+    clip-path: inset(0% 0% 0% 0% round var(--radius-xl));
+  }
+}

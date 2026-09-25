@@ -10,6 +10,14 @@ import { gsap, media } from './gsap';
  * - `clip`    the element is uncovered from the bottom up
  * - `line`    a rule draws from left to right
  *
+ * Two scroll-linked (scrubbed) attributes move an element while it crosses the
+ * viewport, for depth without any timers:
+ *
+ * - `data-parallax="-12"` vertical travel in percent of the element's height
+ * - `data-drift="-8"`     horizontal travel in percent of the element's width
+ *
+ * Travel is halved on small screens.
+ *
  * Opacity is animated rather than visibility so hidden content stays focusable:
  * tabbing to it scrolls it into view, which plays the reveal.
  */
@@ -67,6 +75,19 @@ export function createReveals(scope: HTMLElement) {
           });
           break;
       }
+    });
+
+    const scale = desktop ? 1 : 0.5;
+    const scrub = (element: HTMLElement) => ({ trigger: element, start: 'top bottom', end: 'bottom top', scrub: 0.6 });
+
+    scope.querySelectorAll<HTMLElement>('[data-parallax]').forEach((element) => {
+      const travel = Number(element.dataset.parallax) * scale;
+      gsap.fromTo(element, { yPercent: -travel / 2 }, { yPercent: travel / 2, ease: 'none', scrollTrigger: scrub(element) });
+    });
+
+    scope.querySelectorAll<HTMLElement>('[data-drift]').forEach((element) => {
+      const travel = Number(element.dataset.drift) * scale;
+      gsap.fromTo(element, { xPercent: -travel / 2 }, { xPercent: travel / 2, ease: 'none', scrollTrigger: scrub(element) });
     });
   });
 

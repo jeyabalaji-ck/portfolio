@@ -2,12 +2,12 @@ export type SectionId =
   | 'home'
   | 'about'
   | 'experience'
-  | 'expertise'
+  | 'stack'
+  | 'process'
   | 'projects'
-  | 'skills'
-  | 'approach'
   | 'achievements'
   | 'education'
+  | 'services'
   | 'contact';
 
 export interface NavItem {
@@ -58,17 +58,17 @@ export interface Role {
   stack: string[];
 }
 
-export interface Capability {
-  id: string;
-  title: string;
-  description: string;
-  items: string[];
+export interface StackItem {
+  name: string;
+  /** One line on how the technology is used, drawn from real work and projects. */
+  note: string;
 }
 
-export interface CapabilityNode {
-  label: string;
-  /** Id of the capability this technology belongs to. */
-  capability: string;
+export interface StackCategory {
+  id: string;
+  title: string;
+  summary: string;
+  items: StackItem[];
 }
 
 export interface Project {
@@ -80,6 +80,12 @@ export interface Project {
   stack: string[];
   repoUrl?: string;
   recognition?: string;
+  /** Extra detail for the case study view. Only facts already documented for the project. */
+  caseStudy?: {
+    problem: string;
+    contribution: string;
+    result?: string;
+  };
 }
 
 export interface MinorProject {
@@ -95,7 +101,14 @@ export interface SkillGroup {
   skills: string[];
 }
 
-export interface Principle {
+export interface BuildStage {
+  id: string;
+  title: string;
+  description: string;
+  concepts: string[];
+}
+
+export interface Service {
   title: string;
   description: string;
 }

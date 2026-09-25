@@ -1,34 +1,33 @@
-import type { Principle } from '../types/content';
+import type { BuildStage } from '../types/content';
 
-export const principles: Principle[] = [
+/** How I build frontend software, from first conversation to optimisation. */
+export const buildStages: BuildStage[] = [
   {
-    title: 'Components as contracts',
+    id: 'understand',
+    title: 'Understand',
     description:
-      'Reusable functional components with clear, typed props, so the same building blocks behave consistently across screens and microfrontends.',
+      'Start from the product and the people using it. Working closely with product and backend teams in Agile/Scrum, I pin down the workflows, the edge cases and the API contracts before any component exists.',
+    concepts: ['Requirements', 'User workflows', 'API contracts'],
   },
   {
-    title: 'State where it belongs',
+    id: 'architect',
+    title: 'Architect',
     description:
-      'Local state for local concerns, Redux Toolkit for shared application state and RTK Query for server data - caching and invalidation instead of hand-rolled fetching.',
+      'Components as contracts: reusable functional components with clear, typed props. State where it belongs - local state for local concerns, Redux Toolkit for shared state and RTK Query for server data.',
+    concepts: ['Reusable Components', 'State Management', 'Microfrontends'],
   },
   {
-    title: 'Performance is a feature',
+    id: 'build',
+    title: 'Build',
     description:
-      'Lazy loading, fewer and smarter API calls and careful rendering keep interfaces responsive under frequent data updates.',
+      'Responsive layouts and cross-browser compatibility from the start, for desktop and mobile alike. Understanding the backend - from REST contracts to Spring Boot services - keeps integrations clean.',
+    concepts: ['API Integration', 'Responsive Design', 'Accessibility'],
   },
   {
-    title: 'Confidence before shipping',
+    id: 'optimize',
+    title: 'Optimize',
     description:
-      'Jest tests around core functionality, code reviews and CI/CD pipelines, so changes reach production reliably.',
-  },
-  {
-    title: 'Built for every screen',
-    description:
-      'Responsive layouts and cross-browser compatibility from the start, for desktop and mobile users alike.',
-  },
-  {
-    title: 'Close to the API',
-    description:
-      'Understanding the backend - from REST contracts to Spring Boot services - makes integrations cleaner and debugging faster.',
+      'Performance is a feature: lazy loading, fewer and smarter API calls and careful rendering. Jest tests, code reviews and CI/CD pipelines get changes to production reliably.',
+    concepts: ['Performance', 'Testing', 'Code Quality'],
   },
 ];

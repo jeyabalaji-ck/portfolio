@@ -1,0 +1,91 @@
+@use '../../styles/mixins' as *;
+
+.layout {
+  display: grid;
+  gap: 3.5rem;
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    gap: clamp(3rem, 5vw, 5.5rem);
+  }
+}
+
+// ---- Stages ----
+
+.stages {
+  display: grid;
+  gap: clamp(3rem, 8vw, 4rem);
+
+  @include up(lg) {
+    gap: 0;
+  }
+}
+
+.stage {
+  display: grid;
+  align-content: start;
+  gap: 1.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border-strong);
+
+  @include up(lg) {
+    // Each stage holds the stage long enough for the window beside it to update.
+    min-height: 68vh;
+    padding-bottom: 4rem;
+    opacity: 0.35;
+    transition: opacity var(--duration-slow) var(--ease-out);
+
+    &:hover,
+    &:focus-within {
+      opacity: 1;
+    }
+  }
+}
+
+.stageActive {
+  @include up(lg) {
+    opacity: 1;
+  }
+
+  .stageIndex {
+    color: var(--color-accent);
+  }
+}
+
+.stageIndex {
+  margin: 0;
+  color: var(--color-text-faint);
+  @include mono-label;
+  transition: color var(--duration-base) ease;
+
+  span {
+    color: var(--color-text-faint);
+  }
+}
+
+.stageTitle {
+  font-size: clamp(2.75rem, 4.6vw + 0.5rem, 5.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
+
+.stageText {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-md);
+}
+
+// ---- Architecture window ----
+
+.aside {
+  min-width: 0;
+}
+
+.sticky {
+  @include up(lg) {
+    position: sticky;
+    top: calc(var(--header-height) + 2.5rem);
+  }
+}

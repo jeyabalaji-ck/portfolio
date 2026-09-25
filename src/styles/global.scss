@@ -27,6 +27,25 @@ html {
   text-size-adjust: 100%;
   scroll-behavior: smooth;
   scroll-padding-top: var(--header-height);
+  // Reserve the scrollbar's space so locking scroll (menu, dialogs) never shifts the layout.
+  scrollbar-gutter: stable;
+}
+
+// ---- Smooth scrolling (Lenis) ----
+// Lenis animates the scroll position itself, so native smooth scrolling must be off.
+html.lenis,
+html.lenis body {
+  height: auto;
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-stopped,
+html.scroll-locked {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
 }
 
 body {
@@ -99,6 +118,11 @@ button {
 // Baseline focus indicator for any interactive element without a bespoke style.
 :focus-visible {
   @include focus-ring;
+}
+
+// Headings targeted by in-page links should not show a focus ring when focused programmatically.
+[tabindex='-1']:focus:not(:focus-visible) {
+  outline: none;
 }
 
 // The skip link target is focusable programmatically only.

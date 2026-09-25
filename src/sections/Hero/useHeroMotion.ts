@@ -2,14 +2,16 @@ import type { RefObject } from 'react';
 import { gsap, media, useGSAP } from '../../motion/gsap';
 import { whenIntroRevealed } from '../../motion/intro';
 
-/** Horizontal travel (px) of each headline line under the pointer, for layered depth. */
-const LINE_DEPTH = [14, 28, 8];
+/** Horizontal travel (px) of each name line under the pointer, for layered depth. */
+const LINE_DEPTH = [18, 34];
 
 /**
  * Hero motion in three layers:
- * 1. Entrance: headline words rise from their masks once the intro clears.
- * 2. Scroll: content recedes at different speeds while the next section rises over it.
- * 3. Pointer (desktop): lines, code window and glow drift with the cursor.
+ * 1. Entrance: the name rises character by character once the intro clears.
+ * 2. Scroll: the two name lines part at different speeds while content fades
+ *    and the backdrop sinks, so the next section visibly takes over.
+ * 3. Pointer (desktop): name lines, technology chips and the glow drift with
+ *    the cursor at different depths.
  */
 export function useHeroMotion(scope: RefObject<HTMLElement | null>) {
   useGSAP(
@@ -24,49 +26,36 @@ export function useHeroMotion(scope: RefObject<HTMLElement | null>) {
           const { motion, desktop, pointer } = context.conditions as Record<string, boolean>;
           if (!motion) return;
 
-          const visual = hero.querySelector<HTMLElement>('[data-hero-visual]');
-          const tilt = hero.querySelector<HTMLElement>('[data-hero-tilt]');
           const glow = hero.querySelector<HTMLElement>('[data-hero-glow]');
 
           // 1. Entrance
           const entrance = gsap
             .timeline({ paused: true })
-            .from('[data-hero-word]', {
-              yPercent: 120,
-              rotate: desktop ? 5 : 0,
-              duration: 1.25,
+            .from('[data-hero-char]', {
+              yPercent: 110,
+              duration: 1.3,
               ease: 'expo.out',
-              stagger: 0.065,
+              stagger: 0.035,
             })
-            .from(
-              '[data-hero-fade]',
-              { y: 28, opacity: 0, duration: 1.1, ease: 'expo.out', stagger: 0.09 },
-              0.3,
-            )
+            .from('[data-hero-fade]', { y: 28, opacity: 0, duration: 1.1, ease: 'expo.out', stagger: 0.08 }, 0.35)
+            .from('[data-hero-tech]', { y: 18, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.07 }, 0.6)
+            .from('[data-hero-cue]', { opacity: 0, duration: 1 }, 1)
             .from(glow, { opacity: 0, scale: 0.5, duration: 1.8, ease: 'power2.out' }, 0);
-          if (visual) {
-            entrance.from(
-              visual,
-              { y: 80, rotate: 3, opacity: 0, duration: 1.4, ease: 'expo.out' },
-              0.35,
-            );
-          }
           const unsubscribe = whenIntroRevealed(() => entrance.play());
 
-          // 2. Scroll: title recedes, code window and backdrop move at their own depth.
+          // 2. Scroll: the lines part, content recedes and the backdrop sinks.
           gsap
             .timeline({
               scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.6 },
               defaults: { ease: 'none' },
             })
-            .to(
-              '[data-hero-title]',
-              { yPercent: desktop ? -22 : -10, scale: 0.94, opacity: 0.15, transformOrigin: 'left bottom' },
-              0,
-            )
-            .to('[data-hero-out]', { y: desktop ? -80 : -30, opacity: 0 }, 0)
-            .to(visual, { yPercent: -55 }, 0)
-            .to('[data-hero-backdrop]', { yPercent: 30 }, 0);
+            .to('[data-hero-line="0"]', { x: desktop ? '-7vw' : '-4vw' }, 0)
+            .to('[data-hero-line="1"]', { x: desktop ? '12vw' : '6vw' }, 0)
+            .to('[data-hero-title]', { yPercent: desktop ? -18 : -8, opacity: 0.12 }, 0)
+            .to('[data-hero-identity]', { y: desktop ? -90 : -30, opacity: 0 }, 0)
+            .to('[data-hero-out]', { y: desktop ? -70 : -30, opacity: 0 }, 0)
+            .to('[data-hero-cue]', { opacity: 0, duration: 0.2 }, 0)
+            .to('[data-hero-backdrop]', { yPercent: 28, scale: 1.08 }, 0);
 
           if (!(pointer && desktop)) return unsubscribe;
 
@@ -74,57 +63,53 @@ export function useHeroMotion(scope: RefObject<HTMLElement | null>) {
           const settle = { duration: 1.1, ease: 'power3.out' };
           const lines = gsap.utils
             .toArray<HTMLElement>('[data-hero-line]')
-            .map((line) => gsap.quickTo(line, 'x', settle));
-          const visualMoves = tilt
-            ? (['x', 'y', 'rotationY', 'rotationX'] as const).map((prop) =>
-                gsap.quickTo(tilt, prop, settle),
-              )
-            : [];
+            .map((line) => gsap.quickTo(line, 'xPercent', settle));
+          const chips = gsap.utils.toArray<HTMLElement>('[data-hero-tech]').map((chip) => ({
+            x: gsap.quickTo(chip, 'x', settle),
+            y: gsap.quickTo(chip, 'y', settle),
+            depth: Number(chip.dataset.depth) || 1,
+          }));
           const glowX = glow ? gsap.quickTo(glow, 'x', { duration: 1.6, ease: 'power3.out' }) : null;
           const glowY = glow ? gsap.quickTo(glow, 'y', { duration: 1.6, ease: 'power3.out' }) : null;
-          if (tilt) gsap.set(tilt, { transformPerspective: 1000 });
 
           let bounds: DOMRect | null = null;
-          const onEnter = () => {
-            bounds = hero.getBoundingClientRect();
-          };
           const onMove = (event: PointerEvent) => {
             bounds ??= hero.getBoundingClientRect();
             const nx = (event.clientX - bounds.left) / bounds.width - 0.5;
             const ny = (event.clientY - bounds.top) / bounds.height - 0.5;
-            lines.forEach((setX, index) => setX(nx * (LINE_DEPTH[index] ?? 10)));
-            const [x, y, rotateY, rotateX] = visualMoves;
-            x?.(nx * -36);
-            y?.(ny * -24);
-            rotateY?.(nx * 8);
-            rotateX?.(ny * -8);
-            // The glow is anchored at 72% / 40% of the hero; offset it toward the pointer.
-            glowX?.((nx + 0.5 - 0.72) * bounds.width * 0.6);
-            glowY?.((ny + 0.5 - 0.4) * bounds.height * 0.6);
+            // Name lines move by a fraction of their own width, converted from px depth.
+            lines.forEach((setX, index) => setX(nx * (LINE_DEPTH[index] ?? 12) * 0.12));
+            chips.forEach(({ x, y, depth }) => {
+              x(nx * -14 * depth);
+              y(ny * -10 * depth);
+            });
+            // The glow is anchored at 62% / 42% of the hero; offset it toward the pointer.
+            glowX?.((nx + 0.5 - 0.62) * bounds.width * 0.7);
+            glowY?.((ny + 0.5 - 0.42) * bounds.height * 0.7);
           };
           const onLeave = () => {
             bounds = null;
             lines.forEach((setX) => setX(0));
-            visualMoves.forEach((set) => set(0));
+            chips.forEach(({ x, y }) => {
+              x(0);
+              y(0);
+            });
             glowX?.(0);
             glowY?.(0);
           };
-
           const onScroll = () => {
             bounds = null;
           };
 
-          hero.addEventListener('pointerenter', onEnter);
-          window.addEventListener('scroll', onScroll, { passive: true });
           hero.addEventListener('pointermove', onMove);
           hero.addEventListener('pointerleave', onLeave);
+          window.addEventListener('scroll', onScroll, { passive: true });
 
           return () => {
             unsubscribe();
-            hero.removeEventListener('pointerenter', onEnter);
-            window.removeEventListener('scroll', onScroll);
             hero.removeEventListener('pointermove', onMove);
             hero.removeEventListener('pointerleave', onLeave);
+            window.removeEventListener('scroll', onScroll);
           };
         },
       );

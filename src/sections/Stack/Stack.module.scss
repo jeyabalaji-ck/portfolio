@@ -1,0 +1,207 @@
+@use '../../styles/mixins' as *;
+
+// ---- Categories ----
+
+.categories {
+  display: grid;
+}
+
+.category {
+  display: grid;
+  gap: 1.25rem;
+  padding-block: clamp(1.75rem, 3vw, 2.5rem);
+  border-top: 1px solid var(--color-border-strong);
+
+  &:last-child {
+    border-bottom: 1px solid var(--color-border-strong);
+  }
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: 3rem;
+    align-items: start;
+  }
+}
+
+.heading {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  align-content: start;
+  gap: 0.5rem 0;
+}
+
+.index {
+  padding-top: 0.45rem;
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.title {
+  font-size: var(--text-xl);
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+// Reserved height keeps the rows from jumping as the note changes length.
+.detail {
+  grid-column: 2;
+  min-height: calc(1.55em * 4);
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+
+  strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+}
+
+.detailText {
+  display: block;
+
+  @include motion-ok {
+    animation: detail-in var(--duration-slow) var(--ease-expo) both;
+  }
+}
+
+.techs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem clamp(1rem, 2vw, 1.75rem);
+}
+
+.tech {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.3rem;
+  padding: 0.1em 0;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font-size: clamp(1.625rem, 2.4vw + 0.6rem, 3.25rem);
+  font-weight: 550;
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+  cursor: pointer;
+  transition: opacity var(--duration-base) ease;
+
+  &:focus-visible {
+    @include focus-ring;
+    border-radius: var(--radius-sm);
+  }
+}
+
+.techName {
+  // An underline that sweeps in under the highlighted technology.
+  background: linear-gradient(var(--color-accent), var(--color-accent)) left 100% / 0 2px no-repeat;
+  transition:
+    color var(--duration-base) ease,
+    background-size var(--duration-slow) var(--ease-expo);
+}
+
+.techIndex {
+  padding-top: 0.35em;
+  color: var(--color-text-faint);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition:
+    color var(--duration-base) ease,
+    translate var(--duration-slow) var(--ease-expo);
+}
+
+.techActive {
+  .techName {
+    background-size: 100% 2px;
+  }
+
+  .techIndex {
+    color: var(--color-accent);
+    translate: 0.15rem -0.3rem;
+  }
+}
+
+// While one technology is highlighted, everything else steps back.
+.focused {
+  .tech:not(.techActive) {
+    opacity: 0.28;
+  }
+
+  .category:not(.categoryActive) .title {
+    color: var(--color-text-faint);
+  }
+}
+
+.title {
+  transition: color var(--duration-base) ease;
+}
+
+// ---- Full toolkit ----
+
+.toolkit {
+  margin-top: clamp(4rem, 8vw, 6rem);
+}
+
+.toolkitTitle {
+  margin-bottom: 1.5rem;
+  color: var(--color-text-faint);
+  @include mono-label;
+}
+
+.toolkitGrid {
+  display: grid;
+  gap: 2rem 2.5rem;
+
+  @include up(sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include up(lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.group {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.groupTitle {
+  font-size: var(--text-base);
+  letter-spacing: -0.015em;
+}
+
+.groupNote {
+  margin: 0;
+  color: var(--color-text-faint);
+  font-size: var(--text-xs);
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.875rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+// ---- Marquee ----
+
+.marquee {
+  margin-top: clamp(4rem, 8vw, 7rem);
+}
+
+@keyframes detail-in {
+  from {
+    opacity: 0;
+    translate: 0 0.5rem;
+  }
+}

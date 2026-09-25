@@ -1,35 +1,25 @@
 import type { RefObject } from 'react';
-import { gsap, media, ScrollTrigger, useGSAP } from '../../motion/gsap';
+import { useStepActivation } from '../../hooks/useStepActivation';
+import { gsap, media, useGSAP } from '../../motion/gsap';
 
 /**
  * Drives the experience timeline: each role becomes active as it crosses the
- * middle of the viewport, and the rail fills in step with scroll progress.
- * Activation is state, not motion, so it also runs with reduced motion.
+ * middle of the viewport, and the timeline lines (the desktop rail and the
+ * line beside the cards on small screens) grow in step with scroll progress.
  */
 export function useExperienceMotion(
   scope: RefObject<HTMLElement | null>,
   onActivate: (index: number) => void,
 ) {
+  useStepActivation(scope, '[data-role-card]', onActivate);
+
   useGSAP(
     () => {
-      const root = scope.current;
-      if (!root) return;
-
-      gsap.utils.toArray<HTMLElement>('[data-role-card]').forEach((card, index) => {
-        ScrollTrigger.create({
-          trigger: card,
-          start: 'top 55%',
-          end: 'bottom 55%',
-          onToggle: (self) => {
-            if (self.isActive) onActivate(index);
-          },
-        });
-      });
-
+      if (!scope.current) return;
       const mm = gsap.matchMedia();
       mm.add(media.motion, () => {
         gsap.fromTo(
-          '[data-rail-fill]',
+          '[data-rail-fill], [data-roles-fill]',
           { scaleY: 0 },
           {
             scaleY: 1,
@@ -44,6 +34,6 @@ export function useExperienceMotion(
         );
       });
     },
-    { scope, dependencies: [onActivate] },
+    { scope },
   );
 }

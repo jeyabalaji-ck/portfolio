@@ -14,6 +14,11 @@ export const projects: Project[] = [
     ],
     stack: ['Java', 'Spring Boot', 'JPA', 'PostgreSQL', 'React'],
     repoUrl: 'https://github.com/jeyabalaji-ck/inventory-management-system',
+    caseStudy: {
+      problem: 'Keeping an accurate view of stock levels, production flow and product availability for dairy products.',
+      contribution:
+        'Full-stack implementation: REST APIs with Spring Boot and Spring Data JPA, PostgreSQL persistence and the React interface on top.',
+    },
   },
   {
     id: 'employee',
@@ -28,6 +33,11 @@ export const projects: Project[] = [
     ],
     stack: ['Java', 'Spring Boot', 'JPA', 'MySQL', 'React', 'JWT'],
     repoUrl: 'https://github.com/jeyabalaji-ck/employee-management-system',
+    caseStudy: {
+      problem: 'Managing employees and departments securely, and staying usable as the dataset grows.',
+      contribution:
+        'Employee and department CRUD APIs secured with JWT and role-based access, plus search, filtering, pagination and sorting surfaced in a React admin frontend.',
+    },
   },
   {
     id: 'ecommerce',
@@ -51,6 +61,11 @@ export const projects: Project[] = [
       'Redux Toolkit',
       'Docker',
     ],
+    caseStudy: {
+      problem: 'Customer and admin workflows - catalog, cart and orders - that need secured, validated APIs.',
+      contribution:
+        'REST APIs with JWT authentication, role-based access control, request validation and centralized exception handling, a React / Redux Toolkit frontend, and Docker for consistent environments.',
+    },
   },
   {
     id: 'saffron',
@@ -65,6 +80,12 @@ export const projects: Project[] = [
     ],
     stack: ['IoT', 'Smart Agriculture', 'Automation'],
     recognition: 'Prize recognition · Smart India Hackathon 2024',
+    caseStudy: {
+      problem: 'Growing saffron outside its native climate.',
+      contribution:
+        'An automation-driven, IoT-based approach to controlling environmental conditions and nutrient delivery for aeroponic growth.',
+      result: 'Presented at Smart India Hackathon 2024 and received prize recognition for innovation and feasibility.',
+    },
   },
 ];
 

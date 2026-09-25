@@ -3,13 +3,31 @@
 .panel {
   position: relative;
   z-index: 1;
+  overflow: clip;
+  padding-bottom: clamp(3rem, 6vw, 5rem);
   background: var(--color-bg-elevated);
   border-top: 1px solid var(--color-border);
 }
 
+.section {
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+// ---- Statement (left) and description (right) ----
+
+.intro {
+  display: grid;
+  gap: clamp(3rem, 6vw, 4rem);
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(3rem, 6vw, 6.5rem);
+    align-items: start;
+  }
+}
+
 .statement {
-  max-width: 30ch;
-  margin: 0 0 clamp(4rem, 9vw, 8rem);
+  margin: 0;
   font-size: var(--text-statement);
   font-weight: 500;
   line-height: 1.12;
@@ -17,8 +35,8 @@
   text-wrap: pretty;
 
   @include up(lg) {
-    margin-left: auto;
-    max-width: 24em;
+    position: sticky;
+    top: calc(var(--header-height) + 2rem);
   }
 }
 
@@ -28,20 +46,12 @@
   font-size: 1.08em;
 }
 
-.grid {
+.side {
   display: grid;
   gap: 3rem;
-  padding-top: clamp(2.5rem, 5vw, 4rem);
-  border-top: 1px solid var(--color-border);
-
-  @include up(lg) {
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-    gap: 6rem;
-  }
 }
 
 .body {
-  max-width: 40rem;
   color: var(--color-text-muted);
   font-size: var(--text-md);
 
@@ -92,10 +102,100 @@
   }
 }
 
+// ---- Focus areas: a technical grid whose rules draw in as it arrives ----
+
+.focus {
+  margin-top: clamp(5rem, 10vw, 8rem);
+}
+
+.focusTitle {
+  margin-bottom: 1.5rem;
+  color: var(--color-text-faint);
+  @include mono-label;
+}
+
+.focusGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+
+  @include up(sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include up(lg) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.focusItem {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.625rem;
+  padding: 1.5rem 1.25rem 2rem 0;
+
+  // Top rule, drawn in by the section's motion.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: var(--color-border-strong);
+    transform-origin: left center;
+    scale: var(--rule, 1) 1;
+  }
+
+  // Accent rule on hover.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: var(--color-accent);
+    scale: 0 1;
+    transform-origin: left center;
+    transition: scale var(--duration-slow) var(--ease-expo);
+  }
+
+  @include hover {
+    &::after {
+      scale: 1 1;
+    }
+
+    .focusIndex {
+      color: var(--color-accent);
+      translate: 0 -0.2rem;
+    }
+  }
+}
+
+.focusIndex {
+  color: var(--color-text-faint);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  transition:
+    color var(--duration-base) ease,
+    translate var(--duration-slow) var(--ease-expo);
+}
+
+.focusName {
+  font-size: var(--text-xl);
+  letter-spacing: -0.03em;
+}
+
+.focusDetail {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+// ---- Figures ----
+
 .stats {
   display: grid;
   gap: 2rem;
-  margin-top: clamp(4rem, 8vw, 7rem);
+  margin-top: clamp(4rem, 8vw, 6rem);
 
   @include up(md) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -121,4 +221,39 @@
   margin: 0;
   color: var(--color-text-muted);
   font-size: var(--text-sm);
+}
+
+// ---- Drifting technology tags ----
+
+.tags {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  overflow: clip;
+  pointer-events: none;
+  user-select: none;
+}
+
+.tagRow {
+  display: flex;
+  gap: 0.75rem;
+  width: max-content;
+  margin: 0;
+  will-change: transform;
+}
+
+.tag {
+  padding: 0.625rem 1.125rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 0.4vw + 0.65rem, 0.9375rem);
+  white-space: nowrap;
+
+  &:nth-child(3n + 1) {
+    border-color: transparent;
+    background: var(--color-bg-subtle);
+    color: var(--color-text);
+  }
 }

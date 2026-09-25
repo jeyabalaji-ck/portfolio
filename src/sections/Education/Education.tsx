@@ -6,7 +6,7 @@ import styles from './Education.module.scss';
 
 export function Education() {
   return (
-    <Section index="08" id="education" eyebrow="Education & certifications" title="*Foundations*.">
+    <Section index="07" id="education" eyebrow="Education & certifications" title="*Foundations*.">
       <div className={styles.layout}>
         <div>
           <h3 className={styles.columnTitle}>Education</h3>

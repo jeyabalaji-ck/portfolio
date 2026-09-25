@@ -31,7 +31,8 @@ export function Footer() {
       <div className={`container ${styles.top}`}>
         <div className={styles.identity}>
           <p className={styles.name}>{profile.name}</p>
-          <p className={styles.role}>Software Developer · Frontend Developer</p>
+          <p className={styles.role}>{profile.role}</p>
+          <p className={styles.stack}>React • TypeScript • JavaScript</p>
         </div>
 
         <nav aria-label="Footer" className={styles.nav}>
@@ -45,6 +46,9 @@ export function Footer() {
         </nav>
 
         <div className={styles.aside}>
+          <a className={styles.email} href={`mailto:${profile.email}`} data-cursor="Email">
+            {profile.email}
+          </a>
           <SocialLinks />
           <ButtonLink href="#home" variant="secondary" icon="arrowUp" className={styles.backTop}>
             Back to top

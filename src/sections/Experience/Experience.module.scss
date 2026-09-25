@@ -132,6 +132,31 @@
 
 // ---- Role cards ----
 
+.rolesWrap {
+  position: relative;
+  min-width: 0;
+}
+
+// Small screens: an accent line grows down the timeline with scroll. Desktop uses the rail instead.
+.rolesFill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--color-accent);
+  transform: scaleY(0);
+  transform-origin: top center;
+
+  @include up(lg) {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    display: none;
+  }
+}
+
 .roles {
   display: grid;
   gap: clamp(4rem, 8vw, 7rem);
